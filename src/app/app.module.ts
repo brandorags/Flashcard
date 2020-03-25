@@ -10,11 +10,13 @@ import { AppRoutingModule } from './app-routing.module';
 // user components
 import { AppComponent } from './app.component';
 import { FlashcardDeckComponent } from './flashcard-deck/flashcard-deck.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FlashcardDeckComponent
+    FlashcardDeckComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
