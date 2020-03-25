@@ -9,10 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 
 // user components
 import { AppComponent } from './app.component';
+import { FlashcardDeckComponent } from './flashcard-deck/flashcard-deck.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FlashcardDeckComponent
   ],
   imports: [
     BrowserModule,
