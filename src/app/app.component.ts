@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit() {
-
   }
 
 }
