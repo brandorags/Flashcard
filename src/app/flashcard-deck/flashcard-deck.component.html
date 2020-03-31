@@ -1,3 +1,4 @@
-<p>
-  flashcard-deck works!
-</p>
+<div *ngFor="let title of flashcardDeckTitleArr">
+  {{title}}
+</div>
+<button (click)="saveFlashcardDeckTitle('test')">Save Title</button>
