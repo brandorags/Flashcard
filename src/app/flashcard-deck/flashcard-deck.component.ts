@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { FlashcardService } from '../common/flashcard.service';
+import { NewFlashcardDeckDialogComponent } from '../new-flashcard-deck-dialog/new-flashcard-deck-dialog.component';
 
 @Component({
   selector: 'app-flashcard-deck',
@@ -11,15 +13,21 @@ export class FlashcardDeckComponent implements OnInit {
 
   flashcardDeckTitleArr: string[] = [];
 
-  constructor(private flashcardService: FlashcardService) { }
+  constructor(
+    private dialog: MatDialog,
+    private flashcardService: FlashcardService
+  ) { }
 
   ngOnInit(): void {
     this.flashcardDeckTitleArr = this.flashcardService.getFlashcardDeckTitleArr();
   }
 
-  saveFlashcardDeckTitle(title: string): void {
-    this.flashcardDeckTitleArr.push(title);
-    this.flashcardService.updateFlashcardDeckTitleArr(this.flashcardDeckTitleArr);
+  openDialog(): void {
+    const dialogRef = this.dialog.open(NewFlashcardDeckDialogComponent, {});
+    
+    dialogRef.afterClosed().subscribe(() => {
+      this.flashcardDeckTitleArr = this.flashcardService.getFlashcardDeckTitleArr();
+    });
   }
 
 }

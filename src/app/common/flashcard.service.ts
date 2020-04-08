@@ -10,11 +10,18 @@ export class FlashcardService {
   constructor() { }
 
   getFlashcardDeckTitleArr(): string[] {
-    let titles = localStorage.getItem(this.flashcardDeckTitleArrKey);
+    const titles = localStorage.getItem(this.flashcardDeckTitleArrKey);
     return (titles) ? JSON.parse(titles) : [];
   }
 
-  updateFlashcardDeckTitleArr(titles: string[]): void {
+  saveFlashcardDeckTitle(title: string): void {
+    let titles = this.getFlashcardDeckTitleArr();
+    titles.push(title);
+
+    this.updateFlashcardDeckTitleArr(titles);
+  }
+
+  private updateFlashcardDeckTitleArr(titles: string[]): void {
     localStorage.setItem(this.flashcardDeckTitleArrKey, JSON.stringify(titles));
   }
 
