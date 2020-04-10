@@ -13,7 +13,7 @@ export class NewFlashcardDeckDialogComponent {
 
   title: string;
   filename: string;
-  fileContents: string[];
+  flashcardMap = {};
 
   constructor(
     private dialogRef: MatDialogRef<NewFlashcardDeckDialogComponent>,
@@ -21,7 +21,7 @@ export class NewFlashcardDeckDialogComponent {
   ) { }
 
   saveFlashcardDeck(): void {
-    this.flashcardService.saveFlashcardDeckTitle(this.title);
+    this.flashcardService.saveFlashcardDeck(this.title, this.flashcardMap);
     this.closeDialog();
   }
 
@@ -32,10 +32,19 @@ export class NewFlashcardDeckDialogComponent {
       const reader = new FileReader();
   
       reader.onload = (e: any) => {
-        const fileResult = e.target.result;
-        const fileResultArr = fileResult.split('\n');
-        for (let a of fileResultArr) {
-          this.fileContents.push(a);
+        const fileResultArr = e.target.result.split('\n');
+        for (let i = 0; i < fileResultArr.length; i++) {
+          let row = fileResultArr[i];
+          // ignore header and empty rows
+          if (i === 0 || !row) {
+            continue;
+          }
+
+          const rowSplit = row.split(',');
+          const question = rowSplit[0].trim();
+          const answer = rowSplit[1].trim();
+
+          this.flashcardMap[answer] = question;
         }
       };
   

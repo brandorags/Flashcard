@@ -14,14 +14,14 @@ export class FlashcardService {
     return (titles) ? JSON.parse(titles) : [];
   }
 
-  saveFlashcardDeckTitle(title: string): void {
-    let titles = this.getFlashcardDeckTitleArr();
-    titles.push(title);
-
-    this.updateFlashcardDeckTitleArr(titles);
+  saveFlashcardDeck(title: string, flashcardMap: {}): void {
+    localStorage.setItem(title, JSON.stringify(flashcardMap));
+    this.updateFlashcardDeckTitleArr(title);
   }
 
-  private updateFlashcardDeckTitleArr(titles: string[]): void {
+  private updateFlashcardDeckTitleArr(title: string): void {
+    let titles = this.getFlashcardDeckTitleArr();
+    titles.push(title);
     localStorage.setItem(this.flashcardDeckTitleArrKey, JSON.stringify(titles));
   }
 
