@@ -16,12 +16,23 @@ export class FlashcardService {
 
   saveFlashcardDeck(title: string, flashcardMap: {}): void {
     localStorage.setItem(title, JSON.stringify(flashcardMap));
-    this.updateFlashcardDeckTitleArr(title);
+    this.saveFlashcardDeckTitle(title);
   }
 
-  private updateFlashcardDeckTitleArr(title: string): void {
+  deleteFlashcardDeck(title: string): void {
+    localStorage.removeItem(title);
+    this.deleteFlashcardDeckTitle(title);
+  }
+
+  private saveFlashcardDeckTitle(title: string): void {
     let titles = this.getFlashcardDeckTitleArr();
     titles.push(title);
+    localStorage.setItem(this.flashcardDeckTitleArrKey, JSON.stringify(titles));
+  }
+
+  private deleteFlashcardDeckTitle(title: string): void {
+    let titles = this.getFlashcardDeckTitleArr();
+    titles = titles.filter(t => t !== title);
     localStorage.setItem(this.flashcardDeckTitleArrKey, JSON.stringify(titles));
   }
 

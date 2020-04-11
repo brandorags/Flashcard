@@ -6,7 +6,7 @@
       <div mat-line>{{title}}</div>
       <button type="button" mat-raised-button color="primary">Open</button>
       &nbsp;&nbsp;
-      <button type="button" mat-raised-button color="warn">Delete</button>
+      <button type="button" mat-raised-button color="warn" (click)="openDeleteDeckDialog(title)">Delete</button>
     </mat-list-item>
   </mat-list>
 </div>
@@ -14,6 +14,6 @@
   <div class="center-horizontal-vertical no-wrap">
     <h2>Welcome to Flashcard!</h2>
     <button type="button" id="newFlashcardBtn" mat-raised-button color="accent"
-    (click)="openDialog()">Create a New Flashcard</button>
+    (click)="openNewDeckDialog()">Create a New Flashcard</button>
   </div>
 </ng-template>
