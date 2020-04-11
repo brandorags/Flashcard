@@ -7,7 +7,11 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
 
-.center {
+.center-horizontal {
+  text-align: center;
+}
+
+.center-horizontal-vertical {
   position: absolute;
   top: 50%;
   left: 50%;

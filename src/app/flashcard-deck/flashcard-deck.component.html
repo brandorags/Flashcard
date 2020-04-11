@@ -1,10 +1,17 @@
 <div *ngIf="flashcardDeckTitleArr.length > 0; else newDeck">
-  <div *ngFor="let title of flashcardDeckTitleArr">
-    {{title}}
-  </div>
+  <h2 class="center-horizontal">Flashcard Decks</h2>
+  <mat-list>
+    <mat-list-item *ngFor="let title of flashcardDeckTitleArr">
+      <mat-icon mat-list-icon>description</mat-icon>
+      <div mat-line>{{title}}</div>
+      <button type="button" mat-raised-button color="primary">Open</button>
+      &nbsp;&nbsp;
+      <button type="button" mat-raised-button color="warn">Delete</button>
+    </mat-list-item>
+  </mat-list>
 </div>
 <ng-template #newDeck>
-  <div class="center no-wrap">
+  <div class="center-horizontal-vertical no-wrap">
     <h2>Welcome to Flashcard!</h2>
     <button type="button" id="newFlashcardBtn" mat-raised-button color="accent"
     (click)="openDialog()">Create a New Flashcard</button>
