@@ -11,6 +11,13 @@
       "reAttach": true,
       "url": "http://localhost:4200",
       "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Attach Firefox",
+      "type": "firefox",
+      "request": "attach",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}"
     }
   ]
 }
