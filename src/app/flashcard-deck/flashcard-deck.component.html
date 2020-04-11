@@ -1,5 +1,12 @@
-<div *ngFor="let title of flashcardDeckTitleArr">
-  {{title}}
+<div *ngIf="flashcardDeckTitleArr.length > 0; else newDeck">
+  <div *ngFor="let title of flashcardDeckTitleArr">
+    {{title}}
+  </div>
 </div>
-<button type="button" mat-raised-button color="primary" (click)="openDialog()">Open Dialog</button>
-<br>
+<ng-template #newDeck>
+  <div class="center">
+    <h2>Welcome to Flashcard!</h2>
+    <button type="button" id="newFlashcardBtn" mat-raised-button color="accent"
+    (click)="openDialog()">Create a New Flashcard</button>
+  </div>
+</ng-template>

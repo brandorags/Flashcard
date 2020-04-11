@@ -7,7 +7,7 @@ import { NewFlashcardDeckDialogComponent } from '../new-flashcard-deck-dialog/ne
 @Component({
   selector: 'app-flashcard-deck',
   templateUrl: './flashcard-deck.component.html',
-  styles: []
+  styleUrls: ['./flashcard-deck.component.scss']
 })
 export class FlashcardDeckComponent implements OnInit {
 
