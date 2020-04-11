@@ -1,6 +1,6 @@
 <div *ngIf="flashcardDeckTitleArr.length > 0; else newDeck">
-  <h2 class="center-horizontal">Flashcard Decks</h2>
   <mat-list>
+    <div mat-subheader>Flashcard Decks</div>
     <mat-list-item *ngFor="let title of flashcardDeckTitleArr">
       <mat-icon mat-list-icon>description</mat-icon>
       <div mat-line>{{title}}</div>
@@ -9,6 +9,12 @@
       <button type="button" mat-raised-button color="warn" (click)="openDeleteDeckDialog(title)">Delete</button>
     </mat-list-item>
   </mat-list>
+  <br>
+  <div class="center-horizontal">
+    <button type="button" mat-button color="primary" (click)="openNewDeckDialog()">
+      Add <mat-icon inline="true">add</mat-icon>
+    </button>
+  </div>
 </div>
 <ng-template #newDeck>
   <div class="center-horizontal-vertical no-wrap">
