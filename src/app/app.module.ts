@@ -13,13 +13,15 @@ import { AppComponent } from './app.component';
 import { FlashcardDeckComponent } from './flashcard-deck/flashcard-deck.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NewFlashcardDeckDialogComponent } from './new-flashcard-deck-dialog/new-flashcard-deck-dialog.component';
+import { DeleteFlashcardDeckDialogComponent } from './delete-flashcard-deck-dialog/delete-flashcard-deck-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FlashcardDeckComponent,
     NotFoundComponent,
-    NewFlashcardDeckDialogComponent
+    NewFlashcardDeckDialogComponent,
+    DeleteFlashcardDeckDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { NewFlashcardDeckDialogComponent } from './new-flashcard-deck-dialog/new
     MaterialModule
   ],
   entryComponents: [
-    NewFlashcardDeckDialogComponent
+    NewFlashcardDeckDialogComponent,
+    DeleteFlashcardDeckDialogComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
