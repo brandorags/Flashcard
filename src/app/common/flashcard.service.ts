@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FlashcardService {
+
+  public newDeckEventEmitter: EventEmitter<string> = new EventEmitter();
 
   private readonly flashcardDeckTitleArrKey = 'flashcardDeckTitles';
 
