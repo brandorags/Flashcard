@@ -22,7 +22,7 @@ export class NewFlashcardDeckDialogComponent {
 
   saveFlashcardDeck(): void {
     this.flashcardService.saveFlashcardDeck(this.title, this.flashcardMap);
-    this.closeDialog();
+    this.closeDialog(this.title);
   }
 
   onFileSelected(): void {
@@ -54,8 +54,8 @@ export class NewFlashcardDeckDialogComponent {
     }
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
+  closeDialog(title: string): void {
+    this.dialogRef.close(title);
   }
 
 }
