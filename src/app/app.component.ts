@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,15 +25,17 @@ export class AppComponent {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private flashcardService: FlashcardService
   ) { }
 
   openNewDeckDialog(): void {
     const dialogRef = this.dialog.open(NewFlashcardDeckDialogComponent, {});
     
-    dialogRef.afterClosed().subscribe((title: string) => {
-      if (title) {
-        this.flashcardService.newDeckEventEmitter.emit(title);
+    dialogRef.afterClosed().subscribe((newDeck: string) => {
+      if (newDeck) {
+        this.flashcardService.newDeckEventEmitter.emit(newDeck);
+        this.snackBar.open(`${newDeck} has been created`);
       }
     });
   }
