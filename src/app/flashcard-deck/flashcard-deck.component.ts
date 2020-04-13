@@ -9,8 +9,7 @@ import { DeleteFlashcardDeckDialogComponent } from '../delete-flashcard-deck-dia
 
 @Component({
   selector: 'app-flashcard-deck',
-  templateUrl: './flashcard-deck.component.html',
-  styleUrls: ['./flashcard-deck.component.scss']
+  templateUrl: './flashcard-deck.component.html'
 })
 export class FlashcardDeckComponent implements OnInit, OnDestroy {
 
@@ -43,6 +42,7 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((newDeck: string) => {
       if (newDeck) {
         this.loadFlashcardDeckTitleArr();
+        // TODO: put a snackbar popup here
       }
     });
   }
