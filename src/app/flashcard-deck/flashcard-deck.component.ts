@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 
@@ -19,6 +20,7 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private flashcardService: FlashcardService
   ) { 
     this.newDeckSubscription = this.flashcardService.newDeckEventEmitter.subscribe((newDeck: string) => {
@@ -42,7 +44,7 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((newDeck: string) => {
       if (newDeck) {
         this.loadFlashcardDeckTitleArr();
-        // TODO: put a snackbar popup here
+        this.snackBar.open(`${newDeck} has been created`);
       }
     });
   }
@@ -55,6 +57,7 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((deletedDeck: string) => {
       if (deletedDeck) {
         this.loadFlashcardDeckTitleArr();
+        this.snackBar.open(`${deletedDeck} has been deleted`);
       }
     });
   }
