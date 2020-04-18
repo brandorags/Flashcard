@@ -15,7 +15,7 @@ import { DeleteFlashcardDeckDialogComponent } from '../delete-flashcard-deck-dia
 })
 export class FlashcardDeckComponent implements OnInit, OnDestroy {
 
-  flashcardDeckTitleArr: string[] = [];
+  flashcardDeckTitles: string[] = [];
 
   newDeckSubscription: Subscription;
 
@@ -27,13 +27,13 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
   ) { 
     this.newDeckSubscription = this.flashcardService.newDeckEventEmitter.subscribe((newDeck: string) => {
       if (newDeck) {
-        this.loadFlashcardDeckTitleArr();
+        this.loadFlashcardDeckTitles();
       }
     });
   }
 
   ngOnInit(): void {
-    this.loadFlashcardDeckTitleArr();
+    this.loadFlashcardDeckTitles();
   }
 
   ngOnDestroy(): void {
@@ -49,7 +49,7 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
     
     dialogRef.afterClosed().subscribe((newDeck: string) => {
       if (newDeck) {
-        this.loadFlashcardDeckTitleArr();
+        this.loadFlashcardDeckTitles();
         this.snackBar.open(`${newDeck} has been created`);
       }
     });
@@ -62,14 +62,14 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
     
     dialogRef.afterClosed().subscribe((deletedDeck: string) => {
       if (deletedDeck) {
-        this.loadFlashcardDeckTitleArr();
+        this.loadFlashcardDeckTitles();
         this.snackBar.open(`${deletedDeck} has been deleted`);
       }
     });
   }
 
-  private loadFlashcardDeckTitleArr(): void {
-    this.flashcardDeckTitleArr = this.flashcardService.getFlashcardDeckTitleArr();
+  private loadFlashcardDeckTitles(): void {
+    this.flashcardDeckTitles = this.flashcardService.getFlashcardDeckTitles();
   }
 
 }
