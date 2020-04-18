@@ -10,7 +10,7 @@ export class FlashcardService {
   public newDeckEventEmitter: EventEmitter<string> = new EventEmitter();
 
   private readonly lastAccessedFlashcardDeckTitleKey = 'lastAccessedFlashcardDeckTitle';
-  private readonly flashcardDeckTitleArrKey = 'flashcardDeckTitles';
+  private readonly flashcardDeckTitlesKey = 'flashcardDeckTitles';
 
   constructor() { }
 
@@ -46,21 +46,21 @@ export class FlashcardService {
     return localStorage.getItem(this.lastAccessedFlashcardDeckTitleKey);
   }
 
-  getFlashcardDeckTitleArr(): string[] {
-    const titles = localStorage.getItem(this.flashcardDeckTitleArrKey);
+  getFlashcardDeckTitles(): string[] {
+    const titles = localStorage.getItem(this.flashcardDeckTitlesKey);
     return (titles) ? JSON.parse(titles) : [];
   }
 
   private saveFlashcardDeckTitle(title: string): void {
-    let titles = this.getFlashcardDeckTitleArr();
+    let titles = this.getFlashcardDeckTitles();
     titles.push(title);
-    localStorage.setItem(this.flashcardDeckTitleArrKey, JSON.stringify(titles));
+    localStorage.setItem(this.flashcardDeckTitlesKey, JSON.stringify(titles));
   }
 
   private deleteFlashcardDeckTitle(title: string): void {
-    let titles = this.getFlashcardDeckTitleArr();
+    let titles = this.getFlashcardDeckTitles();
     titles = titles.filter(t => t !== title);
-    localStorage.setItem(this.flashcardDeckTitleArrKey, JSON.stringify(titles));
+    localStorage.setItem(this.flashcardDeckTitlesKey, JSON.stringify(titles));
   }
 
 }

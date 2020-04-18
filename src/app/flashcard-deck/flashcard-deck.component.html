@@ -1,7 +1,7 @@
-<div *ngIf="flashcardDeckTitleArr.length > 0; else newDeck">
+<div *ngIf="flashcardDeckTitles.length > 0; else newDeck">
   <mat-list>
     <div mat-subheader>Flashcard Decks</div>
-    <mat-list-item *ngFor="let title of flashcardDeckTitleArr">
+    <mat-list-item *ngFor="let title of flashcardDeckTitles">
       <mat-icon mat-list-icon>library_books</mat-icon>
       <div mat-line>{{title}}</div>
       <button type="button" mat-raised-button color="primary" (click)="openFlashcardDeck(title)">Open</button>
