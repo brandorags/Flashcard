@@ -7,8 +7,7 @@ import { FlashcardDeck } from '../models/flashcard-deck';
 @Component({
   selector: 'app-flashcard',
   templateUrl: './flashcard.component.html',
-  styles: [
-  ],
+  styleUrls: ['./flashcard.component.scss']
 })
 export class FlashcardComponent implements OnInit {
 
