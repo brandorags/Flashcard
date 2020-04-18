@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -19,6 +20,7 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
   newDeckSubscription: Subscription;
 
   constructor(
+    private router: Router,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private flashcardService: FlashcardService
@@ -36,6 +38,10 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.newDeckSubscription.unsubscribe();
+  }
+
+  openFlashcardDeck(title: string): void {
+    this.router.navigate(['/flashcard'], {state: {title: title}});
   }
 
   openNewDeckDialog(): void {
