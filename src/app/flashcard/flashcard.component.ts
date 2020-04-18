@@ -17,8 +17,13 @@ export class FlashcardComponent implements OnInit {
   constructor(private flashcardService: FlashcardService) { }
 
   ngOnInit(): void {
-    const title = history.state['title'];
+    let title = history.state['title'];
+    if (!title) {
+      title = this.flashcardService.getLastAccessedFlashcardDeckTitle();
+    }
+
     this.flashcardDeck = this.flashcardService.getFlashcardDeck(title);
+    this.flashcardService.saveLastAccessedFlashcardDeckTitle(title);
   }
 
 }
