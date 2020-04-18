@@ -10,18 +10,20 @@ import { AppRoutingModule } from './app-routing.module';
 
 // user components
 import { AppComponent } from './app.component';
+import { FlashcardComponent } from './flashcard/flashcard.component';
 import { FlashcardDeckComponent } from './flashcard-deck/flashcard-deck.component';
-import { NotFoundComponent } from './not-found/not-found.component';
 import { NewFlashcardDeckDialogComponent } from './new-flashcard-deck-dialog/new-flashcard-deck-dialog.component';
 import { DeleteFlashcardDeckDialogComponent } from './delete-flashcard-deck-dialog/delete-flashcard-deck-dialog.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FlashcardComponent,
     FlashcardDeckComponent,
-    NotFoundComponent,
     NewFlashcardDeckDialogComponent,
-    DeleteFlashcardDeckDialogComponent
+    DeleteFlashcardDeckDialogComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
