@@ -28,7 +28,7 @@
     </div>
   </mat-list>
   <br>
-  <div class="center-horizontal">
+  <div *ngIf="!isEditMode" class="center-horizontal">
     <button type="button" mat-button color="accent" (click)="openNewDeckDialog()">
       Add <mat-icon inline="true">add</mat-icon>
     </button>
