@@ -1,13 +1,31 @@
 <div *ngIf="flashcardDeckTitles.length > 0; else newDeck">
   <mat-list>
-    <div mat-subheader>Flashcard Decks</div>
-    <mat-list-item *ngFor="let title of flashcardDeckTitles">
-      <mat-icon mat-list-icon>library_books</mat-icon>
-      <div mat-line>{{title}}</div>
-      <button type="button" mat-raised-button color="primary" (click)="openFlashcardDeck(title)">Open</button>
-      &nbsp;&nbsp;
-      <button type="button" mat-raised-button color="warn" (click)="openDeleteDeckDialog(title)">Delete</button>
-    </mat-list-item>
+    <div mat-subheader>
+      Flashcard Decks
+      <span class="edit-icon">
+        <button type="button" mat-icon-button (click)="toggleEditMode()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </span>
+    </div>
+    <div *ngIf="!isEditMode">
+      <mat-action-list *ngFor="let title of flashcardDeckTitles">
+        <button type="button" mat-list-item (click)="openFlashcardDeck(title)">
+          <mat-icon mat-list-icon>library_books</mat-icon>
+          <div mat-line>{{title}}</div>   
+        </button>
+      </mat-action-list>
+    </div>
+    <div *ngIf="isEditMode">
+      <mat-list-item *ngFor="let title of flashcardDeckTitles">
+        <mat-icon mat-list-icon>library_books</mat-icon>
+        <div mat-line>{{title}}</div>
+        <button type="button" mat-raised-button color="warn"
+        (click)="openDeleteDeckDialog(title)">
+          Delete
+        </button>
+      </mat-list-item>
+    </div>
   </mat-list>
   <br>
   <div class="center-horizontal">

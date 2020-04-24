@@ -11,13 +11,16 @@ import { DeleteFlashcardDeckDialogComponent } from '../delete-flashcard-deck-dia
 
 @Component({
   selector: 'app-flashcard-deck',
-  templateUrl: './flashcard-deck.component.html'
+  templateUrl: './flashcard-deck.component.html',
+  styleUrls: ['./flashcard-deck.component.scss']
 })
 export class FlashcardDeckComponent implements OnInit, OnDestroy {
 
   flashcardDeckTitles: string[] = [];
 
   newDeckSubscription: Subscription;
+
+  isEditMode: boolean;
 
   constructor(
     private router: Router,
@@ -66,6 +69,10 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
         this.snackBar.open(`${deletedDeck} has been deleted`);
       }
     });
+  }
+
+  toggleEditMode(): void {
+    this.isEditMode = !this.isEditMode;
   }
 
   private loadFlashcardDeckTitles(): void {
