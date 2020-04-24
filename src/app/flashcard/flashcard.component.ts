@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { FlashcardService } from '../common/flashcard.service';
 
-import { FlashcardDeck } from '../models/flashcard-deck';
-
 @Component({
   selector: 'app-flashcard',
   templateUrl: './flashcard.component.html',
@@ -11,7 +9,8 @@ import { FlashcardDeck } from '../models/flashcard-deck';
 })
 export class FlashcardComponent implements OnInit {
 
-  flashcardDeck: FlashcardDeck;
+  flashcardDeckTitle: string;
+  flashcards: Map<string, string>;
   
   answerKeys: string[] = [];
   questionCounter: number = 0;
@@ -19,6 +18,7 @@ export class FlashcardComponent implements OnInit {
   choiceOne: string;
   choiceTwo: string;
   choiceThree: string;
+  answerResult: string;
 
   constructor(private flashcardService: FlashcardService) { }
 
@@ -28,10 +28,13 @@ export class FlashcardComponent implements OnInit {
       title = this.flashcardService.getLastAccessedFlashcardDeckTitle();
     }
 
-    this.flashcardDeck = this.flashcardService.getFlashcardDeck(title);
-    this.flashcardService.saveLastAccessedFlashcardDeckTitle(title);
+    const flashcardDeck = this.flashcardService.getFlashcardDeck(title);
+    this.flashcardDeckTitle = flashcardDeck.title;
+    this.flashcards = flashcardDeck.flashcards;
 
-    this.answerKeys = Array.from(this.flashcardDeck.flashcards.keys());
+    this.flashcardService.saveLastAccessedFlashcardDeckTitle(this.flashcardDeckTitle);
+
+    this.answerKeys = Array.from(this.flashcards.keys());
 
     this.generateQuestion();
   }
@@ -41,18 +44,22 @@ export class FlashcardComponent implements OnInit {
     this.randomizeAnswerChoices();
   }
 
+  answerQuestion(answer: string): void {
+    const question = this.flashcards.get(answer);
+    this.answerResult = (question === this.currentQuestion) ? 'Correct!' : 'Incorrect.';
+  }
+
   private showFlashcard(): void {
-    const flashcards = this.flashcardDeck.flashcards;
-    if (this.questionCounter > flashcards.size) {
+    if (this.questionCounter > this.flashcards.size) {
       return;
     }
 
     const answer = this.answerKeys[this.questionCounter];
-    this.currentQuestion = flashcards.get(answer);
+    this.currentQuestion = this.flashcards.get(answer);
   }
 
   private randomizeAnswerChoices(): void {
-    const deckCount = this.flashcardDeck.flashcards.size;
+    const deckCount = this.flashcards.size;
     const correctAnswerChoice = this.getRandomNumber(1, 3);
 
     while (true) {

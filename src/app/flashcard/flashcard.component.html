@@ -1,14 +1,17 @@
 <div class="flashcard">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{flashcardDeck.title}}</mat-card-title>
+      <mat-card-title>{{flashcardDeckTitle}}</mat-card-title>
       <mat-card-subtitle>Question 1 / 50</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      How much wood could a woodchuck chuck if a woodchuck could chuck wood?
+      {{currentQuestion}}
     </mat-card-content>
     <mat-card-footer class="center-horizontal">
-      <h3>Correct!</h3>
+      <h3>{{answerResult}}</h3>
     </mat-card-footer>
   </mat-card>
 </div>
+<button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceOne)">{{choiceOne}}</button>
+<button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceTwo)">{{choiceTwo}}</button>
+<button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceThree)">{{choiceThree}}</button>
