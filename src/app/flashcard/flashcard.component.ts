@@ -59,39 +59,28 @@ export class FlashcardComponent implements OnInit {
   }
 
   private randomizeAnswerChoices(): void {
-    const deckCount = this.flashcards.size;
-    const correctAnswerChoice = this.getRandomNumber(1, 3);
-
-    while (true) {
-      const randomNum = this.getRandomNumber(0, deckCount);
-      this.choiceOne = (correctAnswerChoice === 1) ? 
-        this.answerKeys[this.questionCounter] : 
-        this.answerKeys[randomNum];
-      if (this.choiceOne) {
-        break;
+    let randomAnswerChoiceIndicies: number[] = [];
+    while (randomAnswerChoiceIndicies.length < 2) {
+      const randomNum = this.getRandomNumber(0, (this.flashcards.size - 1));
+      if (!randomAnswerChoiceIndicies.includes(randomNum)) {
+        randomAnswerChoiceIndicies.push(randomNum);
       }
     }
     
-    while (true) {
-      const randomNum = this.getRandomNumber(0, deckCount);
-      this.choiceTwo = (correctAnswerChoice === 2) ? 
-        this.answerKeys[this.questionCounter] : 
-        this.answerKeys[randomNum];
-      if (this.choiceTwo && this.choiceTwo !== this.choiceOne) {
-        break;
-      }
-    }
+    const correctAnswerChoiceIndex = this.questionCounter;
+    const randomNum = this.getRandomNumber(1, 3);
 
-    while (true) {
-      const randomNum = this.getRandomNumber(0, deckCount);
-      this.choiceThree = (correctAnswerChoice === 3) ? 
-        this.answerKeys[this.questionCounter] : 
-        this.answerKeys[randomNum];
-      if (this.choiceThree && this.choiceThree !== this.choiceOne &&
-        this.choiceThree !== this.choiceTwo) {
-        break;
-      }
-    }
+    this.choiceOne = (randomNum === 1) ? 
+      this.answerKeys[correctAnswerChoiceIndex] :
+      this.answerKeys[randomAnswerChoiceIndicies.shift()];
+
+    this.choiceTwo = (randomNum === 2) ? 
+      this.answerKeys[correctAnswerChoiceIndex] :
+      this.answerKeys[randomAnswerChoiceIndicies.shift()];
+
+    this.choiceThree = (randomNum === 3) ? 
+      this.answerKeys[correctAnswerChoiceIndex] : 
+      this.answerKeys[randomAnswerChoiceIndicies.shift()];
   }
 
   private getRandomNumber(min: number, max: number): number {
