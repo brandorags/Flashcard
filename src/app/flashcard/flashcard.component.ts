@@ -21,6 +21,8 @@ export class FlashcardComponent implements OnInit {
   choiceThree: string;
   answerResult: string;
 
+  private usedAnswerKeyIndicies: number[] = [];
+
   constructor(private flashcardService: FlashcardService) { }
 
   ngOnInit(): void {
@@ -51,11 +53,15 @@ export class FlashcardComponent implements OnInit {
   }
 
   private showFlashcard(): void {
-    if (this.questionCounter > this.flashcards.size) {
-      return;
-    }
+    this.answerResult = null;
 
-    const randomIndex = this.getRandomNumber(0, (this.flashcards.size - 1));
+    let randomIndex: number;
+    do {
+      randomIndex = this.getRandomNumber(0, (this.flashcards.size - 1));
+    } while (this.usedAnswerKeyIndicies.includes(randomIndex))
+    
+    this.usedAnswerKeyIndicies.push(randomIndex);
+
     this.currentAnswer = this.answerKeys[randomIndex];
     this.currentQuestion = this.flashcards.get(this.currentAnswer);
   }
