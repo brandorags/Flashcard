@@ -39,11 +39,11 @@ export class FlashcardComponent implements OnInit {
 
     this.answerKeys = Array.from(this.flashcards.keys());
 
-    this.generateQuestion();
+    this.generateQuestion(true);
   }
 
-  generateQuestion(): void {
-    this.showFlashcard();
+  generateQuestion(isNextQuestion: boolean): void {
+    this.showFlashcard(isNextQuestion);
     this.randomizeAnswerChoices();
   }
 
@@ -52,17 +52,31 @@ export class FlashcardComponent implements OnInit {
     this.answerResult = (question === this.currentQuestion) ? 'Correct!' : 'Incorrect.';
   }
 
-  private showFlashcard(): void {
+  goToPreviousQuestion(): void {
+    this.questionCounter--;
+    this.generateQuestion(false);
+  }
+
+  goToNextQuestion(): void {
+    this.questionCounter++;
+    this.generateQuestion(true);
+  }
+
+  private showFlashcard(isNextQuestion: boolean): void {
     this.answerResult = null;
 
-    let randomIndex: number;
-    do {
-      randomIndex = this.getRandomNumber(0, (this.flashcards.size - 1));
-    } while (this.usedAnswerKeyIndicies.includes(randomIndex))
-    
-    this.usedAnswerKeyIndicies.push(randomIndex);
+    let index: number;
+    if (isNextQuestion && this.usedAnswerKeyIndicies.length === this.questionCounter) {
+      do {
+        index = this.getRandomNumber(0, (this.flashcards.size - 1));
+      } while (this.usedAnswerKeyIndicies.includes(index))
+      
+      this.usedAnswerKeyIndicies.push(index);
+    } else {
+      index = this.usedAnswerKeyIndicies[this.questionCounter];
+    }
 
-    this.currentAnswer = this.answerKeys[randomIndex];
+    this.currentAnswer = this.answerKeys[index];
     this.currentQuestion = this.flashcards.get(this.currentAnswer);
   }
 
