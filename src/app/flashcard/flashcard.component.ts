@@ -15,6 +15,7 @@ export class FlashcardComponent implements OnInit {
   answerKeys: string[] = [];
   questionCounter: number = 0;
   currentQuestion: string;
+  currentAnswer: string;
   choiceOne: string;
   choiceTwo: string;
   choiceThree: string;
@@ -54,8 +55,9 @@ export class FlashcardComponent implements OnInit {
       return;
     }
 
-    const answer = this.answerKeys[this.questionCounter];
-    this.currentQuestion = this.flashcards.get(answer);
+    const randomIndex = this.getRandomNumber(0, (this.flashcards.size - 1));
+    this.currentAnswer = this.answerKeys[randomIndex];
+    this.currentQuestion = this.flashcards.get(this.currentAnswer);
   }
 
   private randomizeAnswerChoices(): void {
@@ -67,7 +69,7 @@ export class FlashcardComponent implements OnInit {
       }
     }
     
-    const correctAnswerChoiceIndex = this.questionCounter;
+    const correctAnswerChoiceIndex = this.answerKeys.indexOf(this.currentAnswer);
     const randomNum = this.getRandomNumber(1, 3);
 
     this.choiceOne = (randomNum === 1) ? 
