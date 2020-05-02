@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FlashcardService } from '../common/flashcard.service';
+import { AnswerResult } from '../models/answer-result';
 
 @Component({
   selector: 'app-flashcard',
@@ -16,10 +17,13 @@ export class FlashcardComponent implements OnInit {
   questionCounter: number = 0;
   currentQuestion: string;
   currentAnswer: string;
+  
+  answerResults: AnswerResult[] = [];
+  answerResult: AnswerResult;
+
   choiceOne: string;
   choiceTwo: string;
   choiceThree: string;
-  answerResult: string;
 
   private usedAnswerKeyIndicies: number[] = [];
 
@@ -43,13 +47,20 @@ export class FlashcardComponent implements OnInit {
   }
 
   generateQuestion(isNextQuestion: boolean): void {
-    this.showFlashcard(isNextQuestion);
-    this.randomizeAnswerChoices();
+    this.answerResult = this.answerResults.find(ar => ar.index === this.questionCounter);
+    if (!this.answerResult) {
+      this.showNewFlashcard(isNextQuestion);
+      this.randomizeAnswerChoices();
+    }
   }
 
   answerQuestion(answer: string): void {
     const question = this.flashcards.get(answer);
-    this.answerResult = (question === this.currentQuestion) ? 'Correct!' : 'Incorrect.';
+    const isCorrect = (question === this.currentQuestion);
+    
+    this.answerResult = new AnswerResult(this.questionCounter, this.currentQuestion,
+      this.currentAnswer, isCorrect);
+    this.answerResults.push(this.answerResult);
   }
 
   goToPreviousQuestion(): void {
@@ -62,9 +73,7 @@ export class FlashcardComponent implements OnInit {
     this.generateQuestion(true);
   }
 
-  private showFlashcard(isNextQuestion: boolean): void {
-    this.answerResult = null;
-
+  private showNewFlashcard(isNextQuestion: boolean): void {
     let index: number;
     if (isNextQuestion && this.usedAnswerKeyIndicies.length === this.questionCounter) {
       do {
