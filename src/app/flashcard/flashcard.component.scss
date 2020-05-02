@@ -3,3 +3,26 @@
   margin: auto;
   padding-top: 4vh;
 }
+
+.answer-result {
+  font-size: medium;
+  margin: 5% 0 0 3%;
+}
+
+.correct {
+  color: #388e3c;
+}
+
+.incorrect {
+  color: #d32f2f;
+}
+
+.answer-result-icon-correct {
+  @extend .correct;
+  vertical-align: middle;
+}
+
+.answer-result-icon-incorrect {
+  @extend .incorrect;
+  vertical-align: middle;
+}
