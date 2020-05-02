@@ -11,13 +11,23 @@
       <mat-card-subtitle>Question {{questionCounter + 1}} / {{flashcards.size}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      {{currentQuestion}}
+      <span *ngIf="answerResult">{{answerResult.question}}</span>
+      <span *ngIf="!answerResult">{{currentQuestion}}</span>
     </mat-card-content>
-    <mat-card-footer class="center-horizontal">
-      <h3>{{answerResult}}</h3>
+    <mat-card-footer *ngIf="answerResult" class="center-horizontal">
+      <div *ngIf="answerResult.isCorrect; else incorrectAnswer">
+        <h3>Correct!</h3>
+        <h3><strong>{{answerResult.answer}}</strong></h3>
+      </div>
+      <ng-template #incorrectAnswer>
+        <h3>Incorrect.</h3>
+        <h3>The correct answer is <strong>{{answerResult.answer}}</strong></h3>
+      </ng-template>
     </mat-card-footer>
   </mat-card>
 </div>
-<button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceOne)">{{choiceOne}}</button>
-<button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceTwo)">{{choiceTwo}}</button>
-<button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceThree)">{{choiceThree}}</button>
+<div *ngIf="!answerResult">
+  <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceOne)">{{choiceOne}}</button>
+  <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceTwo)">{{choiceTwo}}</button>
+  <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceThree)">{{choiceThree}}</button>
+</div>
