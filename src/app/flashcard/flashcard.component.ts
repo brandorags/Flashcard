@@ -20,6 +20,8 @@ export class FlashcardComponent implements OnInit {
   
   answerResults: AnswerResult[] = [];
   answerResult: AnswerResult;
+  showResults: boolean;
+  correctAnswerCount: number;
 
   choiceOne: string;
   choiceTwo: string;
@@ -59,7 +61,7 @@ export class FlashcardComponent implements OnInit {
     const isCorrect = (question === this.currentQuestion);
     
     this.answerResult = new AnswerResult(this.questionCounter, this.currentQuestion,
-      this.currentAnswer, isCorrect);
+      this.currentAnswer, answer, isCorrect);
     this.answerResults.push(this.answerResult);
   }
 
@@ -70,6 +72,20 @@ export class FlashcardComponent implements OnInit {
 
   goToNextQuestion(): void {
     this.questionCounter++;
+    this.generateQuestion(true);
+  }
+
+  showResultList(): void {
+    const correctAnswerResults = this.answerResults.filter(ar => ar.isCorrect);
+    this.correctAnswerCount = correctAnswerResults.length;
+    this.showResults = true;
+  }
+
+  resetFlashcards(): void {
+    this.questionCounter = 0;
+    this.answerResults = [];
+    this.showResults = false;
+
     this.generateQuestion(true);
   }
 

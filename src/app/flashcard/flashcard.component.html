@@ -1,33 +1,57 @@
-<button mat-icon-button [disabled]="questionCounter === 0" (click)="goToPreviousQuestion()">
-  <mat-icon>arrow_back</mat-icon>
-</button>
-<button mat-icon-button [disabled]="questionCounter === (flashcards.size - 1)" (click)="goToNextQuestion()">
-  <mat-icon>arrow_forward</mat-icon>
-</button>
-<div class="flashcard">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>{{flashcardDeckTitle}}</mat-card-title>
-      <mat-card-subtitle>Question {{questionCounter + 1}} / {{flashcards.size}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <span *ngIf="answerResult">{{answerResult.question}}</span>
-      <span *ngIf="!answerResult">{{currentQuestion}}</span>
-    </mat-card-content>
-    <mat-card-footer *ngIf="answerResult" class="center-horizontal">
-      <div *ngIf="answerResult.isCorrect; else incorrectAnswer">
-        <h3>Correct!</h3>
-        <h3><strong>{{answerResult.answer}}</strong></h3>
-      </div>
-      <ng-template #incorrectAnswer>
-        <h3>Incorrect.</h3>
-        <h3>The correct answer is <strong>{{answerResult.answer}}</strong></h3>
-      </ng-template>
-    </mat-card-footer>
-  </mat-card>
+<div *ngIf="!showResults; else results">
+  <button mat-icon-button [disabled]="questionCounter === 0" (click)="goToPreviousQuestion()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <button mat-icon-button [disabled]="questionCounter === (flashcards.size - 1)" (click)="goToNextQuestion()">
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+  <div class="flashcard">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{flashcardDeckTitle}}</mat-card-title>
+        <mat-card-subtitle>Question {{questionCounter + 1}} / {{flashcards.size}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <span *ngIf="answerResult">{{answerResult.question}}</span>
+        <span *ngIf="!answerResult">{{currentQuestion}}</span>
+      </mat-card-content>
+      <mat-card-footer *ngIf="answerResult" class="center-horizontal">
+        <div *ngIf="answerResult.isCorrect; else incorrectAnswer">
+          <h3>Correct!</h3>
+          <h3><strong>{{answerResult.answer}}</strong></h3>
+        </div>
+        <ng-template #incorrectAnswer>
+          <h3>Incorrect.</h3>
+          <h3>The correct answer is <strong>{{answerResult.answer}}</strong></h3>
+        </ng-template>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+  <div *ngIf="!answerResult">
+    <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceOne)">{{choiceOne}}</button>
+    <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceTwo)">{{choiceTwo}}</button>
+    <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceThree)">{{choiceThree}}</button>
+  </div>
+  <button *ngIf="answerResults.length === flashcards.size" type="button" mat-raised-button color="accent"
+  (click)="showResultList()">See Results</button>
 </div>
-<div *ngIf="!answerResult">
-  <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceOne)">{{choiceOne}}</button>
-  <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceTwo)">{{choiceTwo}}</button>
-  <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceThree)">{{choiceThree}}</button>
-</div>
+<ng-template #results>
+  <div class="center-horizontal">
+    <h3>{{flashcardDeckTitle}}</h3>
+    <h4>You answered <strong>{{correctAnswerCount}}</strong> out of {{flashcards.size}} correctly</h4>
+  </div>
+  <div *ngFor="let result of answerResults; index as i" class="answer-result">
+    <div *ngIf="result.isCorrect">
+      <mat-icon class="answer-result-icon-correct">check</mat-icon> {{i + 1}}. {{result.question}}:&nbsp;
+      <span class="correct">{{result.answer}}</span>
+    </div>
+    <div *ngIf="!result.isCorrect">
+      <mat-icon class="answer-result-icon-incorrect">close</mat-icon> {{i + 1}}. {{result.question}}:&nbsp;
+      <s>{{result.userAnswer}}</s>&nbsp;<span class="incorrect">{{result.answer}}</span>
+    </div>
+  </div>
+  <br>
+  <div class="center-horizontal">
+    <button type="button" mat-raised-button (click)="resetFlashcards()">Start Over</button>
+  </div>
+</ng-template>
