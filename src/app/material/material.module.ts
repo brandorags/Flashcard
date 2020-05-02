@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list'; 
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
@@ -22,6 +23,7 @@ import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/mater
     MatDialogModule,
     MatListModule,
     MatCardModule,
+    MatGridListModule,
     MatSnackBarModule
   ],
   exports: [
@@ -34,6 +36,7 @@ import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/mater
     MatDialogModule,
     MatListModule,
     MatCardModule,
+    MatGridListModule,
     MatSnackBarModule
   ],
   providers: [
