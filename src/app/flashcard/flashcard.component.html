@@ -1,4 +1,8 @@
 <div *ngIf="!showResults; else results">
+  <div class="center-horizontal flashcard-title">
+    <h2>{{flashcardDeckTitle}}</h2>
+    <h3>Question {{questionCounter + 1}} / {{flashcards.size}}</h3>
+  </div>
   <mat-grid-list cols="6" rowHeight="30vh">
     <mat-grid-tile colspan="1">
       <button mat-icon-button [disabled]="questionCounter === 0" (click)="goToPreviousQuestion()">
@@ -8,23 +12,24 @@
     <mat-grid-tile colspan="4">
       <div class="flashcard">
         <mat-card>
-          <mat-card-header>
-            <mat-card-title>{{flashcardDeckTitle}}</mat-card-title>
-            <mat-card-subtitle>Question {{questionCounter + 1}} / {{flashcards.size}}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
+          <mat-card-header class="invisible-text">Placeholder Invisible Text</mat-card-header>
+          <mat-card-content class="question center-horizontal">
             <span *ngIf="answerResult">{{answerResult.question}}</span>
             <span *ngIf="!answerResult">{{currentQuestion}}</span>
           </mat-card-content>
           <mat-card-footer *ngIf="answerResult" class="center-horizontal">
+            <hr>
             <div *ngIf="answerResult.isCorrect; else incorrectAnswer">
-              <h3>Correct!</h3>
-              <h3><strong>{{answerResult.answer}}</strong></h3>
+              <h4 class="correct">Correct!</h4>
+              <h4><strong>{{answerResult.answer}}</strong></h4>
             </div>
             <ng-template #incorrectAnswer>
-              <h3>Incorrect.</h3>
-              <h3>The correct answer is <strong>{{answerResult.answer}}</strong></h3>
+              <h4 class="incorrect">Incorrect.</h4>
+              <h4>The correct answer is <strong>{{answerResult.answer}}</strong></h4>
             </ng-template>
+          </mat-card-footer>
+          <mat-card-footer *ngIf="!answerResult" class="invisible-text">
+            Placeholder Invisible Text
           </mat-card-footer>
         </mat-card>
       </div>
@@ -54,9 +59,9 @@
   </div>
 </div>
 <ng-template #results>
-  <div class="center-horizontal">
-    <h3>{{flashcardDeckTitle}}</h3>
-    <h4>You answered <strong>{{correctAnswerCount}}</strong> out of {{flashcards.size}} correctly</h4>
+  <div class="center-horizontal flashcard-title">
+    <h2>{{flashcardDeckTitle}}</h2>
+    <h3>You answered <strong>{{correctAnswerCount}}</strong> out of {{flashcards.size}} correctly</h3>
   </div>
   <div *ngFor="let result of answerResults; index as i" class="answer-result">
     <div *ngIf="result.isCorrect">

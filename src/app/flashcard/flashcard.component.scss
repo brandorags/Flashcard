@@ -1,12 +1,13 @@
-.flashcard {
-  min-width: 100%;
-  margin: auto;
-  padding-top: 4vh;
+.flashcard-title {
+  margin-top: 1.5%;
 }
 
-.answer-result {
-  font-size: medium;
-  margin: 5% 0 0 3%;
+.flashcard {
+  min-width: 100%;
+}
+
+.question {
+  font-size: large;
 }
 
 .correct {
@@ -15,6 +16,11 @@
 
 .incorrect {
   color: #d32f2f;
+}
+
+.answer-result {
+  font-size: medium;
+  margin: 5% 0 0 3%;
 }
 
 .answer-result-icon-correct {
