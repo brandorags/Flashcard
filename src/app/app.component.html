@@ -1,6 +1,6 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav
-  #drawer
+  #sidenav
   class="sidenav"
   fixedInViewport="true"
   [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
@@ -8,7 +8,7 @@
   [opened]="!(isHandset$ | async)">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item [routerLink]="['/']">
+      <a mat-list-item (click)="navigateToDeckList()">
         <mat-icon>format_list_bulleted</mat-icon>&nbsp;Deck List
       </a>
       <a mat-list-item (click)="openNewDeckDialog()">
@@ -22,7 +22,7 @@
       type="button"
       aria-label="Toggle sidenav"
       mat-icon-button
-      (click)="drawer.toggle()"
+      (click)="sidenav.toggle()"
       *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
