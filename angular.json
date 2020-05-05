@@ -108,5 +108,8 @@
       }
     }
   },
-  "defaultProject": "flashcard"
+  "defaultProject": "flashcard",
+  "cli": {
+    "analytics": false
+  }
 }
