@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { FlashcardService } from '../common/flashcard.service';
 import { AnswerResult } from '../models/answer-result';
@@ -8,7 +8,7 @@ import { AnswerResult } from '../models/answer-result';
   templateUrl: './flashcard.component.html',
   styleUrls: ['./flashcard.component.scss']
 })
-export class FlashcardComponent implements OnInit {
+export class FlashcardComponent implements OnInit, OnDestroy {
 
   flashcardDeckTitle: string;
   flashcards: Map<string, string>;
@@ -45,7 +45,13 @@ export class FlashcardComponent implements OnInit {
 
     this.answerKeys = Array.from(this.flashcards.keys());
 
+    this.initKeyEventListener();
+
     this.generateQuestion(true);
+  }
+
+  ngOnDestroy(): void {
+    document.onkeyup = null;
   }
 
   generateQuestion(isNextQuestion: boolean): void {
@@ -132,6 +138,30 @@ export class FlashcardComponent implements OnInit {
 
   private getRandomNumber(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  private initKeyEventListener(): void {
+    document.onkeyup = (e) => {
+      switch (e.key) {
+        case 'ArrowRight':
+          this.goToNextQuestion();
+          break;
+        case 'ArrowLeft':
+          this.goToPreviousQuestion();
+          break;
+        case '1':
+          this.answerQuestion(this.choiceOne);
+          break;
+        case '2':
+          this.answerQuestion(this.choiceTwo);
+          break;
+        case '3':
+          this.answerQuestion(this.choiceThree);
+          break;
+        default:
+          break;
+      }
+    }
   }
 
 }
