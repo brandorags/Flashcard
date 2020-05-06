@@ -10,10 +10,16 @@
       "request": "launch",
       "reAttach": true,
       "url": "http://localhost:4200",
-      "pathMappings": [{
+      "pathMappings": [
+        {
+          "url": "webpack:///src",
+          "path": "${workspaceFolder}/src"
+        },
+        {
           "url": "http://localhost:4200",
           "path": "${workspaceFolder}"
-      }]
+        }
+      ]
     },
     {
       "name": "Attach Firefox",
