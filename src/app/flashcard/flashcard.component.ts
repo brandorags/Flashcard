@@ -1,4 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+
+import { SwiperComponent } from 'ngx-useful-swiper';
+import { SwiperOptions } from 'swiper';
 
 import { FlashcardService } from '../common/flashcard.service';
 import { AnswerResult } from '../models/answer-result';
@@ -26,6 +29,26 @@ export class FlashcardComponent implements OnInit, OnDestroy {
   choiceOne: string;
   choiceTwo: string;
   choiceThree: string;
+
+  @ViewChild('swiperInstance') swiperInstance: SwiperComponent;
+  swiperConfig: SwiperOptions = {
+    // navigation: {
+    //   nextEl: '.swiper-button-next',
+    //   prevEl: '.swiper-button-prev',
+    // }
+    navigation: {
+      prevEl: '.arrow-prev',
+      nextEl: '.arrow-next',
+    }
+    // allowSlidePrev: true,
+    // allowSlideNext: true,
+    // grabCursor: true,
+    // on: {
+    //   touchEnd: () => {
+    //     this.goToNextQuestion();
+    //   }
+    // }
+  };
 
   private usedAnswerKeyIndicies: number[] = [];
 
@@ -65,7 +88,7 @@ export class FlashcardComponent implements OnInit, OnDestroy {
   answerQuestion(answer: string): void {
     const question = this.flashcards.get(answer);
     const isCorrect = (question === this.currentQuestion);
-    
+
     this.answerResult = new AnswerResult(this.questionCounter, this.currentQuestion,
       this.currentAnswer, answer, isCorrect);
     this.answerResults.push(this.answerResult);

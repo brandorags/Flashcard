@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+// third-party modules
+import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
+
 // user modules
 import { MaterialModule } from "./material/material.module";
 import { AppRoutingModule } from './app-routing.module';
@@ -30,7 +33,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    NgxUsefulSwiperModule
   ],
   entryComponents: [
     NewFlashcardDeckDialogComponent,
