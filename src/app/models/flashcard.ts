@@ -8,8 +8,13 @@ export class Flashcard {
   choiceThree: string;
   answerResult: AnswerResult;
 
-  constructor(question: string, answer: string) {
+  constructor(question: string, answer: string, choiceOne?: string, choiceTwo?: string,
+    choiceThree?: string, answerResult?: AnswerResult) {
     this.question = question;
     this.answer = answer;
+    this.choiceOne = choiceOne;
+    this.choiceTwo = choiceTwo;
+    this.choiceThree = choiceThree;
+    this.answerResult = answerResult;
   }
 }

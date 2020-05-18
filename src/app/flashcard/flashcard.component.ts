@@ -19,41 +19,31 @@ export class FlashcardComponent implements OnInit, OnDestroy {
   flashcardDeckTitle: string;
   flashcards: Flashcard[] = [];
   
-  answerKeys: string[] = [];
   questionCounter: number = 0;
-  currentQuestion: string;
-  currentAnswer: string;
-  
-  answerResults: AnswerResult[] = [];
-  answerResult: AnswerResult;
-  showResults: boolean;
   correctAnswerCount: number;
+  endOfDeck: boolean;
+  showResults: boolean;
 
   choiceOne: string;
   choiceTwo: string;
   choiceThree: string;
 
+  @ViewChild('previousButton') previousButton: any;
+  @ViewChild('nextButton') nextButton: any;
+
   @ViewChild('swiperInstance') swiperInstance: SwiperComponent;
   swiperConfig: SwiperOptions = {
-    // navigation: {
-    //   nextEl: '.swiper-button-next',
-    //   prevEl: '.swiper-button-prev',
-    // }
     navigation: {
       prevEl: '.swiper-button-prev',
       nextEl: '.swiper-button-next',
-    }
-    // allowSlidePrev: true,
-    // allowSlideNext: true,
-    // grabCursor: true,
+    },
+    grabCursor: true
     // on: {
     //   touchEnd: () => {
     //     this.goToNextQuestion();
     //   }
     // }
   };
-
-  private usedAnswerKeyIndicies: number[] = [];
 
   constructor(private flashcardService: FlashcardService) { }
 
@@ -69,73 +59,64 @@ export class FlashcardComponent implements OnInit, OnDestroy {
 
     this.flashcardService.saveLastAccessedFlashcardDeckTitle(this.flashcardDeckTitle);
 
-    // this.answerKeys = Array.from(this.flashcards.keys());
-
-    // this.initKeyEventListener();
-
-    // this.generateQuestion(true);
+    this.initKeyEventListener();
     this.generateQuestions();
+    this.initCurrentAnswerChoices();
   }
 
   ngOnDestroy(): void {
     document.onkeyup = null;
   }
 
-  // generateQuestion(isNextQuestion: boolean): void {
-  //   this.answerResult = this.answerResults.find(ar => ar.index === this.questionCounter);
-  //   if (!this.answerResult) {
-  //     this.showNewFlashcard(isNextQuestion);
-  //     this.randomizeAnswerChoices();
-  //   }
-  // }
-
-  answerQuestion(flashcard: Flashcard, answerChoice: string): void {
+  answerQuestion(answerChoice: string): void {
+    let flashcard = this.flashcards[this.questionCounter];
     const isCorrect = (answerChoice === flashcard.answer);
-    this.answerResult = new AnswerResult(this.questionCounter, this.currentQuestion,
-      this.currentAnswer, answerChoice, isCorrect);
-    
-    flashcard.answerResult = this.answerResult;
+
+    flashcard.answerResult = new AnswerResult(this.questionCounter, flashcard.question,
+      flashcard.answer, answerChoice, isCorrect);
+
+    if (this.questionCounter === this.flashcards.length - 1) {
+      this.endOfDeck = true;
+    }
   }
 
-  // goToPreviousQuestion(): void {
-  //   this.questionCounter--;
-  //   this.generateQuestion(false);
-  // }
+  goToPreviousQuestion(): void {
+    if (this.questionCounter === 0) {
+      return;
+    }
 
-  // goToNextQuestion(): void {
-  //   this.questionCounter++;
-  //   this.generateQuestion(true);
-  // }
+    this.previousButton.nativeElement.click();
+    this.questionCounter--;
+    this.initCurrentAnswerChoices();
+  }
+
+  goToNextQuestion(): void {
+    if (this.questionCounter === this.flashcards.length - 1) {
+      return;
+    }
+
+    this.nextButton.nativeElement.click();
+    this.questionCounter++;
+    this.initCurrentAnswerChoices();
+  }
 
   showResultList(): void {
-    const correctAnswerResults = this.answerResults.filter(ar => ar.isCorrect);
+    const correctAnswerResults = this.flashcards.filter(ar => ar.answerResult.isCorrect);
     this.correctAnswerCount = correctAnswerResults.length;
     this.showResults = true;
   }
 
   resetFlashcards(): void {
     this.questionCounter = 0;
-    this.answerResults = [];
     this.showResults = false;
+    this.endOfDeck = false;
 
-    // this.generateQuestion(true);
+    for (let flashcard of this.flashcards) {
+      flashcard.answerResult = null;
+    }
+    
+    this.generateQuestions();
   }
-  
-  // private showNewFlashcard(isNextQuestion: boolean): void {
-  //   let index: number;
-  //   if (isNextQuestion && this.usedAnswerKeyIndicies.length === this.questionCounter) {
-  //     do {
-  //       index = this.getRandomNumber(0, (this.flashcards.size - 1));
-  //     } while (this.usedAnswerKeyIndicies.includes(index))
-      
-  //     this.usedAnswerKeyIndicies.push(index);
-  //   } else {
-  //     index = this.usedAnswerKeyIndicies[this.questionCounter];
-  //   }
-
-  //   this.currentAnswer = this.answerKeys[index];
-  //   this.currentQuestion = this.flashcards.get(this.currentAnswer);
-  // }
 
   private generateQuestions(): void {
     const randomizer = new Randomizer();
@@ -144,57 +125,35 @@ export class FlashcardComponent implements OnInit, OnDestroy {
     }
   }
 
-  // private randomizeAnswerChoices(flashcard: Flashcard): void {
-  //   let randomAnswerChoiceIndicies: number[] = [];
-  //   while (randomAnswerChoiceIndicies.length < 2) {
-  //     const randomNum = this.getRandomNumber(0, (this.flashcards.length - 1));
-  //     if (!randomAnswerChoiceIndicies.includes(randomNum)) {
-  //       randomAnswerChoiceIndicies.push(randomNum);
-  //     }
-  //   }
-    
-  //   const correctAnswerChoiceIndex = this.answerKeys.indexOf(this.currentAnswer);
-  //   const randomNum = this.getRandomNumber(1, 3);
+  private initCurrentAnswerChoices(): void {
+    const flashcard = this.flashcards[this.questionCounter];
+    this.choiceOne = flashcard.choiceOne;
+    this.choiceTwo = flashcard.choiceTwo;
+    this.choiceThree = flashcard.choiceThree;
+  }
 
-  //   flashcard.choiceOne = (randomNum === 1) ? 
-  //     this.answerKeys[correctAnswerChoiceIndex] :
-  //     this.answerKeys[randomAnswerChoiceIndicies.shift()];
-
-  //   flashcard.choiceTwo = (randomNum === 2) ? 
-  //     this.answerKeys[correctAnswerChoiceIndex] :
-  //     this.answerKeys[randomAnswerChoiceIndicies.shift()];
-
-  //   flashcard.choiceThree = (randomNum === 3) ? 
-  //     this.answerKeys[correctAnswerChoiceIndex] : 
-  //     this.answerKeys[randomAnswerChoiceIndicies.shift()];
-  // }
-
-  // private getRandomNumber(min: number, max: number): number {
-  //   return Math.floor(Math.random() * (max - min + 1)) + min;
-  // }
-
-  // private initKeyEventListener(): void {
-  //   document.onkeyup = (e) => {
-  //     switch (e.key) {
-  //       case 'ArrowRight':
-  //         this.goToNextQuestion();
-  //         break;
-  //       case 'ArrowLeft':
-  //         this.goToPreviousQuestion();
-  //         break;
-  //       case '1':
-  //         this.answerQuestion(this.choiceOne);
-  //         break;
-  //       case '2':
-  //         this.answerQuestion(this.choiceTwo);
-  //         break;
-  //       case '3':
-  //         this.answerQuestion(this.choiceThree);
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   }
-  //}
+  private initKeyEventListener(): void {
+    document.onkeyup = (e) => {
+      switch (e.key) {
+        case 'ArrowRight':
+          this.goToNextQuestion();
+          break;
+        case 'ArrowLeft':
+          this.goToPreviousQuestion();
+          break;
+        case '1':
+          this.answerQuestion(this.choiceOne);
+          break;
+        case '2':
+          this.answerQuestion(this.choiceTwo);
+          break;
+        case '3':
+          this.answerQuestion(this.choiceThree);
+          break;
+        default:
+          break;
+      }
+    }
+  }
 
 }
