@@ -1,15 +1,30 @@
-<div *ngIf="!showResults; else results">
+<!-- <div *ngIf="!showResults; else results"> -->
   <div class="center-horizontal flashcard-title">
     <h2>{{flashcardDeckTitle}}</h2>
-    <h3>Question {{questionCounter + 1}} / {{flashcards.size}}</h3>
+    <h3>Question {{questionCounter + 1}} / {{flashcards.length}}</h3>
   </div>
   <swiper [config]="swiperConfig" #swiperInstance>
     <div class="swiper-wrapper">
-      <div class="swiper-slide">Hello</div>
+      <div *ngFor="let flashcard of flashcards" class="swiper-slide">
+        <mat-grid-list cols="8" rowHeight="30vh">
+          <mat-grid-tile colspan="1"></mat-grid-tile>
+          <mat-grid-tile colspan="6">
+            <mat-card class="flashcard">
+              <mat-card-header class="invisible-text">Placeholder Invisible Text</mat-card-header>
+              <mat-card-content class="question center-horizontal">
+                {{flashcard.question}}
+              </mat-card-content>
+              <mat-card-footer class="invisible-text">Placeholder Invisible Text</mat-card-footer>
+            </mat-card>
+          </mat-grid-tile>
+          <mat-grid-tile colspan="1"></mat-grid-tile>
+        </mat-grid-list>
+      </div>
+      <!-- <div class="swiper-slide">Hello</div>
       <div class="swiper-slide">There</div>
       <div class="swiper-slide">How</div>
       <div class="swiper-slide">Are</div>
-      <div class="swiper-slide">You?</div>
+      <div class="swiper-slide">You?</div> -->
     </div>
     <div class="swiper-button-prev"></div>
     <div class="swiper-button-next"></div>
@@ -55,7 +70,7 @@
       </button>      
     </mat-grid-tile>
   </mat-grid-list> -->
-  <div *ngIf="!answerResult">
+  <!-- <div *ngIf="!answerResult">
     <mat-grid-list cols="3" rowHeight="20vh">
       <mat-grid-tile>
         <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceOne)">{{choiceOne}}</button>
@@ -92,4 +107,4 @@
   <div class="center-horizontal">
     <button type="button" mat-raised-button color="accent" (click)="resetFlashcards()">Start Over</button>
   </div>
-</ng-template>
+</ng-template> -->
