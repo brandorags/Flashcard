@@ -1,6 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+
+import { SwiperComponent } from 'ngx-useful-swiper';
+import { SwiperOptions } from 'swiper';
 
 import { FlashcardService } from '../common/flashcard.service';
+import { Randomizer } from '../common/randomizer';
+
+import { Flashcard } from '../models/flashcard';
 import { AnswerResult } from '../models/answer-result';
 
 @Component({
@@ -11,23 +17,22 @@ import { AnswerResult } from '../models/answer-result';
 export class FlashcardComponent implements OnInit, OnDestroy {
 
   flashcardDeckTitle: string;
-  flashcards: Map<string, string>;
+  flashcards: Flashcard[] = [];
   
-  answerKeys: string[] = [];
   questionCounter: number = 0;
-  currentQuestion: string;
-  currentAnswer: string;
-  
-  answerResults: AnswerResult[] = [];
-  answerResult: AnswerResult;
-  showResults: boolean;
   correctAnswerCount: number;
+  endOfDeck: boolean;
+  showResults: boolean;
 
   choiceOne: string;
   choiceTwo: string;
   choiceThree: string;
 
-  private usedAnswerKeyIndicies: number[] = [];
+  @ViewChild('previousButton') previousButton: any;
+  @ViewChild('nextButton') nextButton: any;
+
+  @ViewChild('swiperInstance') swiperInstance: SwiperComponent;
+  swiperConfig: SwiperOptions;
 
   constructor(private flashcardService: FlashcardService) { }
 
@@ -43,111 +48,103 @@ export class FlashcardComponent implements OnInit, OnDestroy {
 
     this.flashcardService.saveLastAccessedFlashcardDeckTitle(this.flashcardDeckTitle);
 
-    this.answerKeys = Array.from(this.flashcards.keys());
-
+    this.initSwiper();
     this.initKeyEventListener();
-
-    this.generateQuestion(true);
+    this.generateQuestions();
+    this.initCurrentFlashcardAnswerChoices();
   }
 
   ngOnDestroy(): void {
     document.onkeyup = null;
   }
 
-  generateQuestion(isNextQuestion: boolean): void {
-    this.answerResult = this.answerResults.find(ar => ar.index === this.questionCounter);
-    if (!this.answerResult) {
-      this.showNewFlashcard(isNextQuestion);
-      this.randomizeAnswerChoices();
+  answerQuestion(answerChoice: string): void {
+    let flashcard = this.flashcards[this.questionCounter];
+    const isCorrect = (answerChoice === flashcard.answer);
+
+    flashcard.answerResult = new AnswerResult(this.questionCounter, flashcard.question,
+      flashcard.answer, answerChoice, isCorrect);
+
+    if (this.questionCounter === this.flashcards.length - 1) {
+      this.endOfDeck = true;
     }
   }
 
-  answerQuestion(answer: string): void {
-    const question = this.flashcards.get(answer);
-    const isCorrect = (question === this.currentQuestion);
-    
-    this.answerResult = new AnswerResult(this.questionCounter, this.currentQuestion,
-      this.currentAnswer, answer, isCorrect);
-    this.answerResults.push(this.answerResult);
-  }
-
   goToPreviousQuestion(): void {
+    if (this.questionCounter === 0) {
+      return;
+    }
+
     this.questionCounter--;
-    this.generateQuestion(false);
+    this.initCurrentFlashcardAnswerChoices();
   }
 
   goToNextQuestion(): void {
+    if (this.questionCounter === this.flashcards.length - 1) {
+      return;
+    }
+
     this.questionCounter++;
-    this.generateQuestion(true);
+    this.initCurrentFlashcardAnswerChoices();
   }
 
   showResultList(): void {
-    const correctAnswerResults = this.answerResults.filter(ar => ar.isCorrect);
+    const correctAnswerResults = this.flashcards.filter(ar => ar.answerResult.isCorrect);
     this.correctAnswerCount = correctAnswerResults.length;
     this.showResults = true;
   }
 
   resetFlashcards(): void {
     this.questionCounter = 0;
-    this.answerResults = [];
     this.showResults = false;
+    this.endOfDeck = false;
 
-    this.generateQuestion(true);
-  }
-
-  private showNewFlashcard(isNextQuestion: boolean): void {
-    let index: number;
-    if (isNextQuestion && this.usedAnswerKeyIndicies.length === this.questionCounter) {
-      do {
-        index = this.getRandomNumber(0, (this.flashcards.size - 1));
-      } while (this.usedAnswerKeyIndicies.includes(index))
-      
-      this.usedAnswerKeyIndicies.push(index);
-    } else {
-      index = this.usedAnswerKeyIndicies[this.questionCounter];
-    }
-
-    this.currentAnswer = this.answerKeys[index];
-    this.currentQuestion = this.flashcards.get(this.currentAnswer);
-  }
-
-  private randomizeAnswerChoices(): void {
-    let randomAnswerChoiceIndicies: number[] = [];
-    while (randomAnswerChoiceIndicies.length < 2) {
-      const randomNum = this.getRandomNumber(0, (this.flashcards.size - 1));
-      if (!randomAnswerChoiceIndicies.includes(randomNum)) {
-        randomAnswerChoiceIndicies.push(randomNum);
-      }
+    for (let flashcard of this.flashcards) {
+      flashcard.answerResult = null;
     }
     
-    const correctAnswerChoiceIndex = this.answerKeys.indexOf(this.currentAnswer);
-    const randomNum = this.getRandomNumber(1, 3);
-
-    this.choiceOne = (randomNum === 1) ? 
-      this.answerKeys[correctAnswerChoiceIndex] :
-      this.answerKeys[randomAnswerChoiceIndicies.shift()];
-
-    this.choiceTwo = (randomNum === 2) ? 
-      this.answerKeys[correctAnswerChoiceIndex] :
-      this.answerKeys[randomAnswerChoiceIndicies.shift()];
-
-    this.choiceThree = (randomNum === 3) ? 
-      this.answerKeys[correctAnswerChoiceIndex] : 
-      this.answerKeys[randomAnswerChoiceIndicies.shift()];
+    this.generateQuestions();
   }
 
-  private getRandomNumber(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  private generateQuestions(): void {
+    const randomizer = new Randomizer();
+    for (let flashcard of this.flashcards) {
+      randomizer.randomizeFlashcardAnswerChoices(flashcard, this.flashcards);
+    }
+  }
+
+  private initCurrentFlashcardAnswerChoices(): void {
+    const flashcard = this.flashcards[this.questionCounter];
+    this.choiceOne = flashcard.choiceOne;
+    this.choiceTwo = flashcard.choiceTwo;
+    this.choiceThree = flashcard.choiceThree;
+  }
+
+  private initSwiper(): void {
+    this.swiperConfig = {
+      navigation: {
+        prevEl: '.swiper-button-prev',
+        nextEl: '.swiper-button-next',
+      },
+      on: {
+        slidePrevTransitionEnd: () => {
+          this.goToPreviousQuestion();
+        },
+        slideNextTransitionEnd: () => {
+          this.goToNextQuestion();
+        }
+      }
+    };
   }
 
   private initKeyEventListener(): void {
     document.onkeyup = (e) => {
       switch (e.key) {
         case 'ArrowRight':
-          this.goToNextQuestion();
+          this.nextButton.nativeElement.click();
           break;
         case 'ArrowLeft':
-          this.goToPreviousQuestion();
+          this.previousButton.nativeElement.click();
           break;
         case '1':
           this.answerQuestion(this.choiceOne);

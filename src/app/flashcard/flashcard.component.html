@@ -1,46 +1,43 @@
 <div *ngIf="!showResults; else results">
   <div class="center-horizontal flashcard-title">
     <h2>{{flashcardDeckTitle}}</h2>
-    <h3>Question {{questionCounter + 1}} / {{flashcards.size}}</h3>
+    <h3>Question {{questionCounter + 1}} / {{flashcards.length}}</h3>
   </div>
-  <mat-grid-list cols="6" rowHeight="30vh">
-    <mat-grid-tile colspan="1">
-      <button mat-icon-button [disabled]="questionCounter === 0" (click)="goToPreviousQuestion()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="4">
-      <div class="flashcard">
-        <mat-card>
-          <mat-card-header class="invisible-text">Placeholder Invisible Text</mat-card-header>
-          <mat-card-content class="question center-horizontal">
-            <span *ngIf="answerResult">{{answerResult.question}}</span>
-            <span *ngIf="!answerResult">{{currentQuestion}}</span>
-          </mat-card-content>
-          <mat-card-footer *ngIf="answerResult" class="center-horizontal">
-            <hr>
-            <div *ngIf="answerResult.isCorrect; else incorrectAnswer">
-              <h4 class="correct">Correct!</h4>
-              <h4><strong>{{answerResult.answer}}</strong></h4>
-            </div>
-            <ng-template #incorrectAnswer>
-              <h4 class="incorrect">Incorrect.</h4>
-              <h4>The correct answer is <strong>{{answerResult.answer}}</strong></h4>
-            </ng-template>
-          </mat-card-footer>
-          <mat-card-footer *ngIf="!answerResult" class="invisible-text">
-            Placeholder Invisible Text
-          </mat-card-footer>
-        </mat-card>
+  <swiper [config]="swiperConfig" #swiperInstance>
+    <div class="swiper-wrapper">
+      <div *ngFor="let flashcard of flashcards" class="swiper-slide">
+        <mat-grid-list cols="8" rowHeight="30vh">
+          <mat-grid-tile colspan="1"></mat-grid-tile>
+          <mat-grid-tile colspan="6">
+            <mat-card class="flashcard">
+              <mat-card-header class="invisible-text">Placeholder Invisible Text</mat-card-header>
+              <mat-card-content class="question center-horizontal">
+                {{flashcard.question}}
+              </mat-card-content>
+              <mat-card-footer *ngIf="flashcard.answerResult" class="center-horizontal">
+                <hr>
+                <div *ngIf="flashcard.answerResult.isCorrect; else incorrectAnswer">
+                  <h4 class="correct">Correct!</h4>
+                  <h4><strong>{{flashcard.answer}}</strong></h4>
+                </div>
+                <ng-template #incorrectAnswer>
+                  <h4 class="incorrect">Incorrect.</h4>
+                  <h4>The correct answer is <strong>{{flashcard.answer}}</strong></h4>
+                </ng-template>
+              </mat-card-footer>
+              <mat-card-footer *ngIf="!flashcard.answerResult" class="invisible-text">
+                Placeholder Invisible Text
+              </mat-card-footer>
+            </mat-card>
+          </mat-grid-tile>
+          <mat-grid-tile colspan="1"></mat-grid-tile>
+        </mat-grid-list>
       </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="1">
-      <button mat-icon-button [disabled]="questionCounter === (flashcards.size - 1)" (click)="goToNextQuestion()">
-        <mat-icon>arrow_forward</mat-icon>
-      </button>      
-    </mat-grid-tile>
-  </mat-grid-list>
-  <div *ngIf="!answerResult">
+    </div>
+    <div class="swiper-button-prev" #previousButton></div>
+    <div class="swiper-button-next" #nextButton></div>
+  </swiper>
+  <div *ngIf="!flashcards[questionCounter].answerResult">
     <mat-grid-list cols="3" rowHeight="20vh">
       <mat-grid-tile>
         <button type="button" mat-raised-button color="primary" (click)="answerQuestion(choiceOne)">{{choiceOne}}</button>
@@ -53,7 +50,7 @@
       </mat-grid-tile>
     </mat-grid-list>
   </div>
-  <div *ngIf="answerResults.length === flashcards.size" class="center-horizontal">
+  <div *ngIf="endOfDeck" class="center-horizontal">
     <br>
     <button type="button" mat-raised-button color="accent" (click)="showResultList()">See Results</button>
   </div>
@@ -61,16 +58,16 @@
 <ng-template #results>
   <div class="center-horizontal flashcard-title">
     <h2>{{flashcardDeckTitle}}</h2>
-    <h3>You answered <strong>{{correctAnswerCount}}</strong> out of {{flashcards.size}} correctly</h3>
+    <h3>You answered <strong>{{correctAnswerCount}}</strong> out of {{flashcards.length}} correctly</h3>
   </div>
-  <div *ngFor="let result of answerResults; index as i" class="answer-result">
-    <div *ngIf="result.isCorrect">
-      <mat-icon class="answer-result-icon-correct">check</mat-icon> {{i + 1}}. {{result.question}}:&nbsp;
-      <span class="correct">{{result.answer}}</span>
+  <div *ngFor="let flashcard of flashcards; index as i" class="answer-result">
+    <div *ngIf="flashcard.answerResult.isCorrect">
+      <mat-icon class="answer-result-icon-correct">check</mat-icon> {{i + 1}}. {{flashcard.answerResult.question}}:&nbsp;
+      <span class="correct">{{flashcard.answerResult.answer}}</span>
     </div>
-    <div *ngIf="!result.isCorrect">
-      <mat-icon class="answer-result-icon-incorrect">close</mat-icon> {{i + 1}}. {{result.question}}:&nbsp;
-      <s>{{result.userAnswer}}</s>&nbsp;<span class="incorrect">{{result.answer}}</span>
+    <div *ngIf="!flashcard.answerResult.isCorrect">
+      <mat-icon class="answer-result-icon-incorrect">close</mat-icon> {{i + 1}}. {{flashcard.answerResult.question}}:&nbsp;
+      <s>{{flashcard.answerResult.userAnswer}}</s>&nbsp;<span class="incorrect">{{flashcard.answerResult.answer}}</span>
     </div>
   </div>
   <br>

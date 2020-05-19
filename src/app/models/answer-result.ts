@@ -6,11 +6,11 @@ export class AnswerResult {
   isCorrect: boolean;
   
   constructor(index?: number, question?: string, answer?: string, 
-    userAnser?: string, isCorrect?: boolean) {
+    userAnswer?: string, isCorrect?: boolean) {
     this.index = index;
     this.question = question;
     this.answer = answer;
-    this.userAnswer = userAnser;
+    this.userAnswer = userAnswer;
     this.isCorrect = isCorrect;
   }
 }
