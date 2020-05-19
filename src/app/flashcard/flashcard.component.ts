@@ -32,18 +32,7 @@ export class FlashcardComponent implements OnInit, OnDestroy {
   @ViewChild('nextButton') nextButton: any;
 
   @ViewChild('swiperInstance') swiperInstance: SwiperComponent;
-  swiperConfig: SwiperOptions = {
-    navigation: {
-      prevEl: '.swiper-button-prev',
-      nextEl: '.swiper-button-next',
-    },
-    grabCursor: true
-    // on: {
-    //   touchEnd: () => {
-    //     this.goToNextQuestion();
-    //   }
-    // }
-  };
+  swiperConfig: SwiperOptions;
 
   constructor(private flashcardService: FlashcardService) { }
 
@@ -59,6 +48,7 @@ export class FlashcardComponent implements OnInit, OnDestroy {
 
     this.flashcardService.saveLastAccessedFlashcardDeckTitle(this.flashcardDeckTitle);
 
+    this.initSwiper();
     this.initKeyEventListener();
     this.generateQuestions();
     this.initCurrentFlashcardAnswerChoices();
@@ -85,7 +75,6 @@ export class FlashcardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.previousButton.nativeElement.click();
     this.questionCounter--;
     this.initCurrentFlashcardAnswerChoices();
   }
@@ -95,7 +84,6 @@ export class FlashcardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.nextButton.nativeElement.click();
     this.questionCounter++;
     this.initCurrentFlashcardAnswerChoices();
   }
@@ -132,14 +120,31 @@ export class FlashcardComponent implements OnInit, OnDestroy {
     this.choiceThree = flashcard.choiceThree;
   }
 
+  private initSwiper(): void {
+    this.swiperConfig = {
+      navigation: {
+        prevEl: '.swiper-button-prev',
+        nextEl: '.swiper-button-next',
+      },
+      on: {
+        slidePrevTransitionEnd: () => {
+          this.goToPreviousQuestion();
+        },
+        slideNextTransitionEnd: () => {
+          this.goToNextQuestion();
+        }
+      }
+    };
+  }
+
   private initKeyEventListener(): void {
     document.onkeyup = (e) => {
       switch (e.key) {
         case 'ArrowRight':
-          this.goToNextQuestion();
+          this.nextButton.nativeElement.click();
           break;
         case 'ArrowLeft':
-          this.goToPreviousQuestion();
+          this.previousButton.nativeElement.click();
           break;
         case '1':
           this.answerQuestion(this.choiceOne);
