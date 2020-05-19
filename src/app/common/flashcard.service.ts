@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 
 import { FlashcardDeck } from '../models/flashcard-deck';
+import { Flashcard } from '../models/flashcard';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,12 @@ export class FlashcardService {
     let deck = localStorage.getItem(title);
     deck = JSON.parse(deck);
     
-    let flashcards = new Map<string, string>();
-    const keys = Object.keys(deck);
-    for (const key of keys) {
-      const value = deck[key];
-      flashcards.set(key, value);
+    let flashcards: Flashcard[] = [];
+    const answers = Object.keys(deck);
+    for (const answer of answers) {
+      const question = deck[answer];
+      const flashcard: Flashcard = new Flashcard(question, answer);
+      flashcards.push(flashcard);
     }
 
     return new FlashcardDeck(title, flashcards);
