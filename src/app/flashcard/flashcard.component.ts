@@ -61,7 +61,7 @@ export class FlashcardComponent implements OnInit, OnDestroy {
 
     this.initKeyEventListener();
     this.generateQuestions();
-    this.initCurrentAnswerChoices();
+    this.initCurrentFlashcardAnswerChoices();
   }
 
   ngOnDestroy(): void {
@@ -87,7 +87,7 @@ export class FlashcardComponent implements OnInit, OnDestroy {
 
     this.previousButton.nativeElement.click();
     this.questionCounter--;
-    this.initCurrentAnswerChoices();
+    this.initCurrentFlashcardAnswerChoices();
   }
 
   goToNextQuestion(): void {
@@ -97,7 +97,7 @@ export class FlashcardComponent implements OnInit, OnDestroy {
 
     this.nextButton.nativeElement.click();
     this.questionCounter++;
-    this.initCurrentAnswerChoices();
+    this.initCurrentFlashcardAnswerChoices();
   }
 
   showResultList(): void {
@@ -125,7 +125,7 @@ export class FlashcardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private initCurrentAnswerChoices(): void {
+  private initCurrentFlashcardAnswerChoices(): void {
     const flashcard = this.flashcards[this.questionCounter];
     this.choiceOne = flashcard.choiceOne;
     this.choiceTwo = flashcard.choiceTwo;
