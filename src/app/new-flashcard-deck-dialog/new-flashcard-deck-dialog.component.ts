@@ -14,6 +14,7 @@ export class NewFlashcardDeckDialogComponent {
   title: string;
   filename: string;
   flashcardMap = {};
+  flashcardMapLength: number;
 
   constructor(
     private dialogRef: MatDialogRef<NewFlashcardDeckDialogComponent>,
@@ -32,6 +33,8 @@ export class NewFlashcardDeckDialogComponent {
       const reader = new FileReader();
   
       reader.onload = (e: any) => {
+        this.flashcardMap = {};
+
         const fileResultArr = e.target.result.split('\n');
         for (let i = 0; i < fileResultArr.length; i++) {
           let row = fileResultArr[i];
@@ -46,6 +49,8 @@ export class NewFlashcardDeckDialogComponent {
 
           this.flashcardMap[answer] = question;
         }
+
+        this.flashcardMapLength = Object.keys(this.flashcardMap).length;
       };
   
       const file = inputNode.files[0];
