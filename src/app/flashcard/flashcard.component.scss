@@ -1,3 +1,5 @@
+@use 'src/scss/colors';
+
 .flashcard-title {
   margin-top: 1.5%;
 }
@@ -19,11 +21,11 @@
 }
 
 .correct {
-  color: #388e3c;
+  color: colors.$green;
 }
 
 .incorrect {
-  color: #d32f2f;
+  color: colors.$red;
 }
 
 .answer-result {

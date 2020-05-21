@@ -1,4 +1,6 @@
-html, body { 
+@use 'colors';
+
+html, body {
   height: 100%; 
 }
 
@@ -17,4 +19,8 @@ body {
 
 .invisible-text {
   color: white;
+}
+
+.warning-text {
+  color: colors.$red;
 }
