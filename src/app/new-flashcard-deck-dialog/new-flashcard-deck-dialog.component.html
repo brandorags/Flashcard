@@ -7,8 +7,12 @@
   <br>
   <button type="button" mat-stroked-button (click)="fileInput.click()">Upload CSV File</button>
   <input type="file" id="file" hidden (change)="onFileSelected()" #fileInput>&nbsp;&nbsp;{{filename}}
+  <div *ngIf="flashcardMapLength < 3">
+    <br>
+    <span class="warning-text">The file must contain at least 3 questions</span>
+  </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="saveFlashcardDeck()">Save</button>
+  <button mat-button [disabled]="flashcardMapLength < 3" (click)="saveFlashcardDeck()">Save</button>
   <button mat-button (click)="closeDialog(null)">Cancel</button>
 </div>
