@@ -25,18 +25,22 @@ export class Randomizer {
     flashcard.choiceThree = (randomNum === 3) ? correctAnswer : flashcards[randomAnswerChoiceIndicies.shift()].answer;
   }
 
-  // TODO: this one needs more work
   /**
    * reorders the flashcard array in random order
    * 
    * @param flashcards - the flashcard array to shuffle
    */
   public shuffleFlashcards(flashcards: Flashcard[]): void {
-    for (let i = flashcards.length - 1; i > 0; i--) {
-      const randomIndex = Math.floor(Math.random() * (i + 1));
-      const tempFlashcard = flashcards[randomIndex];
+    let currentIndex = flashcards.length;
+    let randomIndex: number;
+    let tempFlashcard: Flashcard;
 
-      flashcards[i] = flashcards[randomIndex];
+    while (currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      tempFlashcard = flashcards[currentIndex];
+      flashcards[currentIndex] = flashcards[randomIndex];
       flashcards[randomIndex] = tempFlashcard;
     }
   }
