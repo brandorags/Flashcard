@@ -108,8 +108,10 @@ export class FlashcardComponent implements OnInit, OnDestroy {
 
   private generateQuestions(): void {
     const randomizer = new Randomizer();
-    for (let flashcard of this.flashcards) {
-      randomizer.randomizeFlashcardAnswerChoices(flashcard, this.flashcards);
+
+    for (let i = 0; i < this.flashcards.length; i++) {
+      let flashcard = this.flashcards[i];
+      randomizer.randomizeFlashcardAnswerChoices(flashcard, this.flashcards, i);
     }
 
     randomizer.shuffleFlashcards(this.flashcards);

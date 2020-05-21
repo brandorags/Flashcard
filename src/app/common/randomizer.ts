@@ -3,16 +3,17 @@ import { Flashcard } from '../models/flashcard';
 export class Randomizer {
 
   /**
-   * Creates random answer choices for a flashcard
+   * creates random answer choices for a flashcard
    * 
    * @param flashcard - the flashcard to create random answer choices for
    * @param flashcards - the array of flashcards to create random answer choices from
+   * @param flashcardIndex - the location of the flashcard in the flashcards array
    */
-  public randomizeFlashcardAnswerChoices(flashcard: Flashcard, flashcards: Flashcard[]): void {
+  public randomizeFlashcardAnswerChoices(flashcard: Flashcard, flashcards: Flashcard[], flashcardIndex: number): void {
     let randomAnswerChoiceIndicies: number[] = [];
     while (randomAnswerChoiceIndicies.length < 2) {
       const randomNum = this.getRandomNumber(0, (flashcards.length - 1));
-      if (!randomAnswerChoiceIndicies.includes(randomNum)) {
+      if (!randomAnswerChoiceIndicies.includes(randomNum) && randomNum !== flashcardIndex) {
         randomAnswerChoiceIndicies.push(randomNum);
       }
     }
