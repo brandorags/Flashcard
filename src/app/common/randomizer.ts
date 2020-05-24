@@ -3,7 +3,7 @@ import { Flashcard } from '../models/flashcard';
 export class Randomizer {
 
   /**
-   * creates random answer choices for a flashcard
+   * Creates random answer choices for a flashcard
    * 
    * @param flashcard - the flashcard to create random answer choices for
    * @param flashcards - the array of flashcards to create random answer choices from
@@ -27,7 +27,7 @@ export class Randomizer {
   }
 
   /**
-   * reorders the flashcard array in random order
+   * Reorders the flashcard array in random order
    * 
    * @param flashcards - the flashcard array to shuffle
    */
@@ -52,7 +52,7 @@ export class Randomizer {
    * @param min - the integer to start the range 
    * @param max - the integer to end the range
    * 
-   * @returns an random integer that falls within (and including) the minimum and maximum range
+   * @returns a random integer that falls within (and including) the minimum and maximum range
    */
   private getRandomNumber(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
