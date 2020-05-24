@@ -12,17 +12,17 @@
       <mat-action-list *ngFor="let title of flashcardDeckTitles">
         <button type="button" mat-list-item (click)="openFlashcardDeck(title)">
           <mat-icon mat-list-icon>library_books</mat-icon>
-          <div mat-line>{{title}}</div>   
+          <div mat-line>{{title}}</div>
         </button>
       </mat-action-list>
     </div>
     <div *ngIf="isEditMode">
+      <br>
       <mat-list-item *ngFor="let title of flashcardDeckTitles">
         <mat-icon mat-list-icon>library_books</mat-icon>
         <div mat-line>{{title}}</div>
-        <button type="button" mat-raised-button color="warn"
-        (click)="openDeleteDeckDialog(title)">
-          Delete
+        <button type="button" mat-icon-button color="warn" (click)="openDeleteDeckDialog(title)">
+          <mat-icon>delete</mat-icon>
         </button>
       </mat-list-item>
     </div>
