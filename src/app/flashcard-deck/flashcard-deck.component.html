@@ -4,7 +4,8 @@
       Flashcard Decks
       <span class="edit-icon">
         <button type="button" mat-icon-button (click)="toggleEditMode()">
-          <mat-icon>edit</mat-icon>
+          <mat-icon *ngIf="!isEditMode">edit</mat-icon>
+          <mat-icon *ngIf="isEditMode">close</mat-icon>
         </button>
       </span>
     </div>
