@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FlashcardComponent } from './flashcard/flashcard.component';
 import { FlashcardDeckComponent } from './flashcard-deck/flashcard-deck.component';
+import { CreateEditFlashcardDeckComponent } from './create-edit-flashcard-deck/create-edit-flashcard-deck.component';
 import { NewFlashcardDeckDialogComponent } from './new-flashcard-deck-dialog/new-flashcard-deck-dialog.component';
 import { DeleteFlashcardDeckDialogComponent } from './delete-flashcard-deck-dialog/delete-flashcard-deck-dialog.component';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -24,6 +25,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     AppComponent,
     FlashcardComponent,
     FlashcardDeckComponent,
+    CreateEditFlashcardDeckComponent,
     NewFlashcardDeckDialogComponent,
     DeleteFlashcardDeckDialogComponent,
     NotFoundComponent
