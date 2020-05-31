@@ -1,31 +1,7 @@
 import { Flashcard } from '../models/flashcard';
 
 export class Randomizer {
-
-  /**
-   * Creates random answer choices for a flashcard
-   * 
-   * @param flashcard - the flashcard to create random answer choices for
-   * @param flashcards - the array of flashcards to create random answer choices from
-   * @param flashcardIndex - the location of the flashcard in the flashcards array
-   */
-  public randomizeFlashcardAnswerChoices(flashcard: Flashcard, flashcards: Flashcard[], flashcardIndex: number): void {
-    let randomAnswerChoiceIndicies: number[] = [];
-    while (randomAnswerChoiceIndicies.length < 2) {
-      const randomNum = this.getRandomNumber(0, (flashcards.length - 1));
-      if (!randomAnswerChoiceIndicies.includes(randomNum) && randomNum !== flashcardIndex) {
-        randomAnswerChoiceIndicies.push(randomNum);
-      }
-    }
-    
-    const correctAnswer = flashcard.answer;
-    const randomNum = this.getRandomNumber(1, 3);
-
-    flashcard.choiceOne = (randomNum === 1) ? correctAnswer : flashcards[randomAnswerChoiceIndicies.shift()].answer;
-    flashcard.choiceTwo = (randomNum === 2) ? correctAnswer : flashcards[randomAnswerChoiceIndicies.shift()].answer;
-    flashcard.choiceThree = (randomNum === 3) ? correctAnswer : flashcards[randomAnswerChoiceIndicies.shift()].answer;
-  }
-
+  
   /**
    * Reorders the flashcard array in random order
    * 
@@ -43,6 +19,31 @@ export class Randomizer {
       tempFlashcard = flashcards[currentIndex];
       flashcards[currentIndex] = flashcards[randomIndex];
       flashcards[randomIndex] = tempFlashcard;
+    }
+  }
+  
+  /**
+   * Creates random answer choices for a flashcard
+   * 
+   * @param flashcards - the array of flashcards to create random answer choices from
+   */
+  public randomizeFlashcardAnswerChoices(flashcards: Flashcard[]): void {
+    for (let i = 0; i < flashcards.length; i++) {
+      let flashcard = flashcards[i];
+      let randomAnswerChoiceIndicies: number[] = [];
+      while (randomAnswerChoiceIndicies.length < 2) {
+        const randomNum = this.getRandomNumber(0, (flashcards.length - 1));
+        if (!randomAnswerChoiceIndicies.includes(randomNum) && randomNum !== i) {
+          randomAnswerChoiceIndicies.push(randomNum);
+        }
+      }
+      
+      const correctAnswer = flashcard.answer;
+      const randomNum = this.getRandomNumber(1, 3);
+  
+      flashcard.choiceOne = (randomNum === 1) ? correctAnswer : flashcards[randomAnswerChoiceIndicies.shift()].answer;
+      flashcard.choiceTwo = (randomNum === 2) ? correctAnswer : flashcards[randomAnswerChoiceIndicies.shift()].answer;
+      flashcard.choiceThree = (randomNum === 3) ? correctAnswer : flashcards[randomAnswerChoiceIndicies.shift()].answer;      
     }
   }
 
