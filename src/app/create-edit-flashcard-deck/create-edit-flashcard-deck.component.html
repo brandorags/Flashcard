@@ -2,6 +2,11 @@
   <h2>Create/Edit Flashcard Deck</h2>
 </div>
 <div class="center-horizontal">
+  <button type="button" mat-raised-button color="primary" (click)="saveFlashcardDeck()">
+    Save Flashcard Deck <mat-icon inline="true">save</mat-icon>
+  </button>
+  <br>
+  <br>
   <mat-form-field>
     <mat-label>Flashcard Deck Title</mat-label>
     <input matInput placeholder="Comp Sci 101" [(ngModel)]="flashcardDeckTitle">
@@ -11,12 +16,12 @@
   <div *ngFor="let flashcard of flashcards; let i = index">
     <mat-form-field>
       <mat-label>Question #{{i + 1}}</mat-label>
-      <textarea matInput placeholder="What color is made when blue and yellow are mixed?">{{flashcard.question}}</textarea>
+      <textarea matInput placeholder="What color is made when blue and yellow are mixed?" [(ngModel)]="flashcard.question">{{flashcard.question}}</textarea>
     </mat-form-field>
     <br>
     <mat-form-field>
       <mat-label>Answer #{{i + 1}}</mat-label>
-      <input matInput placeholder="Green" value="{{flashcard.answer}}">
+      <input matInput placeholder="Green" value="{{flashcard.answer}}" [(ngModel)]="flashcard.answer">
     </mat-form-field>
     <br>
     <br>
@@ -24,4 +29,9 @@
   <button type="button" mat-button color="accent" (click)="addQuestion()">
     Add Question <mat-icon inline="true">add</mat-icon>
   </button>
+  <br>
+  <br>
+  <button type="button" mat-raised-button color="primary" (click)="saveFlashcardDeck()">
+    Save Flashcard Deck <mat-icon inline="true">save</mat-icon>
+  </button>  
 </div>

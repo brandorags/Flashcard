@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { FlashcardService } from '../common/flashcard.service';
+
 import { Flashcard } from '../models/flashcard';
 
 @Component({
@@ -11,7 +15,10 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
   flashcardDeckTitle: string;
   flashcards: Flashcard[] = [];
 
-  constructor() { }
+  constructor(
+    private snackBar: MatSnackBar,
+    private flashcardService: FlashcardService
+  ) { }
 
   ngOnInit(): void {
     if (this.flashcards.length === 0) {
@@ -24,6 +31,16 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
   addQuestion(): void {
     const flashcard = new Flashcard(null, null);
     this.flashcards.push(flashcard);
+  }
+
+  saveFlashcardDeck(): void {
+    let flashcardMap = {};
+    for (const flashcard of this.flashcards) {
+      flashcardMap[flashcard.answer] = flashcard.question; 
+    }
+
+    this.flashcardService.saveFlashcardDeck(this.flashcardDeckTitle, flashcardMap);
+    this.snackBar.open(`${this.flashcardDeckTitle} has been created`);
   }
 
 }
