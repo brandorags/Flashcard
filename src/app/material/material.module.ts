@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox'; 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,6 +16,7 @@ import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/mater
 @NgModule({
   imports: [
     MatButtonModule,
+    MatCheckboxModule,
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
@@ -28,6 +30,7 @@ import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/mater
   ],
   exports: [
     MatButtonModule,
+    MatCheckboxModule,
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,

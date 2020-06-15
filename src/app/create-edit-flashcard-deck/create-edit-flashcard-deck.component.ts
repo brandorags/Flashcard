@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 import { FlashcardService } from '../common/flashcard.service';
 
 import { Flashcard } from '../models/flashcard';
+import { NewFlashcardDeckDialogComponent } from '../new-flashcard-deck-dialog/new-flashcard-deck-dialog.component';
 
 @Component({
   selector: 'app-create-edit-flashcard-deck',
@@ -17,6 +19,7 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
 
   constructor(
     private snackBar: MatSnackBar,
+    private dialog: MatDialog,
     private flashcardService: FlashcardService
   ) { }
 
@@ -41,6 +44,17 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
 
     this.flashcardService.saveFlashcardDeck(this.flashcardDeckTitle, flashcardMap);
     this.snackBar.open(`${this.flashcardDeckTitle} has been created`);
+  }
+
+  openNewDeckDialog(): void {
+    const dialogRef = this.dialog.open(NewFlashcardDeckDialogComponent, {});
+    
+    dialogRef.afterClosed().subscribe((newDeck: string) => {
+      if (newDeck) {
+        this.flashcardService.newDeckEventEmitter.emit(newDeck);
+        this.snackBar.open(`${newDeck} has been created`);
+      }
+    });
   }
 
 }

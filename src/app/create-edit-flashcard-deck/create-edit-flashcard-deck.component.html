@@ -33,5 +33,15 @@
   <br>
   <button type="button" mat-raised-button color="primary" (click)="saveFlashcardDeck()">
     Save Flashcard Deck <mat-icon inline="true">save</mat-icon>
-  </button>  
+  </button>
+  <br>
+  <br>
+  <p class="upload-help-text">
+    Have a CSV file? Upload your questions/answers with the button below. 
+    Make sure that your questions are in the first column and your answers
+    are in the second column.
+  </p>
+  <button type="button" mat-raised-button (click)="openNewDeckDialog()">
+    Upload... <mat-icon inline="true">publish</mat-icon>
+  </button>
 </div>
