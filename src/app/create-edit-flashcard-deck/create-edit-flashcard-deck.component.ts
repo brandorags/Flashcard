@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -14,8 +15,10 @@ import { NewFlashcardDeckDialogComponent } from '../new-flashcard-deck-dialog/ne
 })
 export class CreateEditFlashcardDeckComponent implements OnInit {
 
-  flashcardDeckTitle: string;
+  flashcardDeckTitle = new FormControl('', Validators.required);
   flashcards: Flashcard[] = [];
+
+  deckTitleErrorMessage: string;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -37,13 +40,18 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
   }
 
   saveFlashcardDeck(): void {
-    let flashcardMap = {};
-    for (const flashcard of this.flashcards) {
-      flashcardMap[flashcard.answer] = flashcard.question; 
+    const isDeckValid = this.validateFlashcardDeck();
+    if (!isDeckValid) {
+      return;
     }
 
-    this.flashcardService.saveFlashcardDeck(this.flashcardDeckTitle, flashcardMap);
-    this.snackBar.open(`${this.flashcardDeckTitle} has been created`);
+    let flashcardMap = {};
+    for (const flashcard of this.flashcards) {
+      flashcardMap[flashcard.answer] = flashcard.question;
+    }
+
+    this.flashcardService.saveFlashcardDeck(this.flashcardDeckTitle.value, flashcardMap);
+    this.snackBar.open(`${this.flashcardDeckTitle.value} has been created`);
   }
 
   openNewDeckDialog(): void {
@@ -55,6 +63,15 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
         this.snackBar.open(`${newDeck} has been created`);
       }
     });
+  }
+
+  private validateFlashcardDeck(): boolean {
+    if (this.flashcardDeckTitle.hasError) {
+      this.deckTitleErrorMessage = 'You must enter a title';
+      return false;
+    }
+
+    return true;
   }
 
 }

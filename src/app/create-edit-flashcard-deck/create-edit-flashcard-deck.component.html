@@ -9,7 +9,8 @@
   <br>
   <mat-form-field>
     <mat-label>Flashcard Deck Title</mat-label>
-    <input matInput placeholder="Comp Sci 101" [(ngModel)]="flashcardDeckTitle">
+    <input matInput placeholder="Comp Sci 101" [formControl]="flashcardDeckTitle" required>
+    <mat-error *ngIf="flashcardDeckTitle.invalid">{{deckTitleErrorMessage}}</mat-error>
   </mat-form-field>
   <br>
   <br>
@@ -34,6 +35,7 @@
   <button type="button" mat-raised-button color="primary" (click)="saveFlashcardDeck()">
     Save Flashcard Deck <mat-icon inline="true">save</mat-icon>
   </button>
+  <br>
   <br>
   <br>
   <p class="upload-help-text">
