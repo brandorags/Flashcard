@@ -32,6 +32,10 @@
   </button>
   <br>
   <br>
+  <ng-container *ngIf="flashcardErrorMessage">
+    <div class="error-text">{{flashcardErrorMessage}}</div>
+    <br>
+  </ng-container>
   <button type="button" mat-raised-button color="primary" (click)="saveFlashcardDeck()">
     Save Flashcard Deck <mat-icon inline="true">save</mat-icon>
   </button>

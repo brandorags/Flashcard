@@ -19,6 +19,7 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
   flashcards: Flashcard[] = [];
 
   deckTitleErrorMessage: string;
+  flashcardErrorMessage: string;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -66,8 +67,31 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
   }
 
   private validateFlashcardDeck(): boolean {
-    if (this.flashcardDeckTitle.hasError) {
+    // reset error messages
+    this.deckTitleErrorMessage = '';
+    this.flashcardErrorMessage = '';
+
+    // check if deck title has a value
+    if (this.flashcardDeckTitle.hasError('required')) {
+      this.flashcardDeckTitle.markAsTouched();
       this.deckTitleErrorMessage = 'You must enter a title';
+      return false;
+    }
+
+    // check if there's at least 3 question/answer pairs entered
+    let validFlashcardCounter = 0;
+    for (const flashcard of this.flashcards) {
+      if (flashcard.question && flashcard.answer) {
+        validFlashcardCounter++
+      }
+
+      if (validFlashcardCounter >= 3) {
+        break;
+      }
+    }
+
+    if (validFlashcardCounter < 3) {
+      this.flashcardErrorMessage = 'At least 3 question/answers need to be entered';
       return false;
     }
 
