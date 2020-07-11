@@ -13,6 +13,7 @@ export class NewFlashcardDeckDialogComponent {
 
   title: string;
   filename: string;
+  hasHeaders: boolean;
   flashcardMap = {};
   flashcardMapLength: number;
 
@@ -38,8 +39,8 @@ export class NewFlashcardDeckDialogComponent {
         const fileResultArr = e.target.result.split('\n');
         for (let i = 0; i < fileResultArr.length; i++) {
           let row = fileResultArr[i];
-          // ignore header and empty rows
-          if (i === 0 || !row) {
+          // ignore header (if applicable) and empty rows
+          if ((this.hasHeaders && i === 0) || !row) {
             continue;
           }
 

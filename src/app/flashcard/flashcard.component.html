@@ -1,5 +1,5 @@
 <div *ngIf="!showResults; else results">
-  <div class="center-horizontal flashcard-title">
+  <div class="center-horizontal page-title">
     <h2>{{flashcardDeckTitle}}</h2>
     <h3>Question {{questionCounter + 1}} / {{flashcards.length}}</h3>
   </div>
@@ -56,7 +56,7 @@
   </div>
 </div>
 <ng-template #results>
-  <div class="center-horizontal flashcard-title">
+  <div class="center-horizontal page-title">
     <h2>{{flashcardDeckTitle}}</h2>
     <h3>You answered <strong>{{correctAnswerCount}}</strong> out of {{flashcards.length}} correctly</h3>
   </div>
