@@ -1,0 +1,9 @@
+@use 'src/scss/colors';
+
+.upload-help-text {
+  font-size: smaller;
+}
+
+.error-text {
+  color: colors.$bright-red;
+}

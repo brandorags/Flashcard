@@ -17,6 +17,10 @@ export class FlashcardService {
 
   getFlashcardDeck(title: string): FlashcardDeck {
     let deck = localStorage.getItem(title);
+    if (!deck) {
+      return null;
+    }
+
     deck = JSON.parse(deck);
     
     let flashcards: Flashcard[] = [];
@@ -55,8 +59,10 @@ export class FlashcardService {
 
   private saveFlashcardDeckTitle(title: string): void {
     let titles = this.getFlashcardDeckTitles();
-    titles.push(title);
-    localStorage.setItem(this.flashcardDeckTitlesKey, JSON.stringify(titles));
+    if (!titles.includes(title)) {
+      titles.push(title);
+      localStorage.setItem(this.flashcardDeckTitlesKey, JSON.stringify(titles));
+    }
   }
 
   private deleteFlashcardDeckTitle(title: string): void {

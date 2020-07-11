@@ -43,6 +43,10 @@ export class FlashcardDeckComponent implements OnInit, OnDestroy {
     this.newDeckSubscription.unsubscribe();
   }
 
+  navigateToCreateEditFlashcardDeck(title: string): void {
+    this.router.navigate(['/create-edit'], {state: {title: title}});
+  } 
+
   openFlashcardDeck(title: string): void {
     this.router.navigate(['/flashcard'], {state: {title: title}});
   }

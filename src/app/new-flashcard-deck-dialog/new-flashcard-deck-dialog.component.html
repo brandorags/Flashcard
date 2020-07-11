@@ -5,6 +5,9 @@
     <input matInput type="text" placeholder="Comp. Sci. 101" [(ngModel)]="title">
   </mat-form-field>
   <br>
+  <mat-checkbox [(ngModel)]="hasHeaders">My file has headers</mat-checkbox>
+  <br>
+  <br>
   <button type="button" mat-stroked-button (click)="fileInput.click()">Upload CSV File</button>
   <input type="file" id="file" hidden (change)="onFileSelected()" #fileInput>&nbsp;&nbsp;{{filename}}
   <div *ngIf="flashcardMapLength < 3">
