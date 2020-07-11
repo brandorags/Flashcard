@@ -15,8 +15,10 @@ import { NewFlashcardDeckDialogComponent } from '../new-flashcard-deck-dialog/ne
 })
 export class CreateEditFlashcardDeckComponent implements OnInit {
 
-  flashcardDeckTitle = new FormControl('', Validators.required);
+  flashcardDeckTitle: FormControl;
   flashcards: Flashcard[] = [];
+
+  currentDeckTitle: string;
 
   deckTitleErrorMessage: string;
   flashcardErrorMessage: string;
@@ -28,7 +30,14 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.flashcards.length === 0) {
+    this.currentDeckTitle = history.state['title'] ?? '';
+    this.flashcardDeckTitle = new FormControl(this.currentDeckTitle, Validators.required);
+
+    const flashcardDeck = this.flashcardService.getFlashcardDeck(this.currentDeckTitle);
+    if (flashcardDeck) {
+      this.flashcards = flashcardDeck.flashcards;
+    } else {
+      // init with 3 questions
       for (let i = 0; i < 3; i++) {
         this.addQuestion();
       }
@@ -52,7 +61,20 @@ export class CreateEditFlashcardDeckComponent implements OnInit {
     }
 
     this.flashcardService.saveFlashcardDeck(this.flashcardDeckTitle.value, flashcardMap);
-    this.snackBar.open(`${this.flashcardDeckTitle.value} has been created`);
+    if (this.currentDeckTitle !== this.flashcardDeckTitle.value) {
+      this.flashcardService.deleteFlashcardDeck(this.currentDeckTitle);
+    }
+
+    let successMessage: string;
+    if (this.currentDeckTitle) {
+      successMessage = `${this.flashcardDeckTitle.value} has been updated`;
+    } else {
+      successMessage = `${this.flashcardDeckTitle.value} has been created`;      
+    }
+
+    this.snackBar.open(successMessage);
+
+    this.currentDeckTitle = this.flashcardDeckTitle.value;
   }
 
   openNewDeckDialog(): void {
